@@ -1,4 +1,4 @@
-package com.github.rougsig.devtools.app.action
+package com.github.rougsig.devtools.app.store
 
 data class Action(
   val name: String,

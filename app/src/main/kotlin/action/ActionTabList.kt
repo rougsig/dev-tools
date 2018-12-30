@@ -1,6 +1,7 @@
 package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.AppStyle
+import com.github.rougsig.devtools.app.store.Action
 import com.github.rougsig.devtools.app.store.actions
 import com.github.rougsig.devtools.app.store.onActionClick
 import javafx.collections.ObservableList

@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.action
 
+import com.github.rougsig.devtools.app.store.Action
 import com.github.rougsig.devtools.app.store.currentAction
 import com.github.rougsig.devtools.app.store.currentActionFields
 import com.github.rougsig.devtools.app.util.stringConverter

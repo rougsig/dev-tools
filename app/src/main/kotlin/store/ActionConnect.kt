@@ -1,6 +1,5 @@
 package com.github.rougsig.devtools.app.store
 
-import com.github.rougsig.devtools.app.action.Action
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.ActionRepository
 import javafx.beans.property.SimpleListProperty
