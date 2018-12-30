@@ -1,21 +1,19 @@
 package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.store.currentAction
+import com.github.rougsig.devtools.app.store.currentActionFields
 import com.github.rougsig.devtools.app.util.stringConverter
 import javafx.beans.value.ObservableValue
+import javafx.collections.ObservableList
 import javafx.event.EventTarget
 import javafx.scene.control.TreeItem
 import javafx.scene.layout.Priority
 import tornadofx.*
 
-fun EventTarget.actionTabDetails(action: ObservableValue<Action>) {
-  val fields = action.value.fields.observable()
-
-  // TODO do it in the right way
-  action.onChange {
-    fields.setAll(action.value.fields)
-  }
-
+fun EventTarget.actionTabDetails(
+  action: ObservableValue<Action>,
+  actionFields: ObservableList<Action.Field>
+) {
   vbox {
     hgrow = Priority.ALWAYS
     label(
@@ -34,7 +32,7 @@ fun EventTarget.actionTabDetails(action: ObservableValue<Action>) {
 
       populate { parent ->
         when {
-          parent == root -> fields
+          parent == root -> actionFields
           parent.value is Action.Field.ListField -> (parent.value as Action.Field.ListField).value
           else -> null
         }
@@ -44,5 +42,6 @@ fun EventTarget.actionTabDetails(action: ObservableValue<Action>) {
 }
 
 fun EventTarget.actionTabDetails() = actionTabDetails(
-  currentAction()
+  currentAction(),
+  currentActionFields()
 )
