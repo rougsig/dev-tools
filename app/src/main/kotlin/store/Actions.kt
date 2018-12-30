@@ -14,7 +14,21 @@ private val actions = mutableListOf<Action>().observable()
 private val connection = repo
   .actionLive()
   .subscribeOnUi { action ->
-    actions.add(0, Action(action))
+    actions.add(
+      0, Action(
+        action, mutableListOf(
+          Action.Field.StringField("catCount", "1"),
+          Action.Field.StringField("duckCount", "2"),
+          Action.Field.ListField(
+            "list",
+            listOf(
+              Action.Field.StringField("catCount", "1"),
+              Action.Field.StringField("duckCount", "2")
+            )
+          )
+        )
+      )
+    )
   }
 
 fun actions() = actions

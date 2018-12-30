@@ -1,11 +1,26 @@
 package com.github.rougsig.devtools.app.action
 
-import java.util.*
-
 data class Action(
-  val id: String = UUID.randomUUID().toString()
+  val name: String,
+  val fields: List<Field>
 ) {
   companion object {
-    val EMPTY = Action("")
+    val EMPTY = Action(
+      "", mutableListOf()
+    )
+  }
+
+  sealed class Field(
+    open val name: String
+  ) {
+    class StringField(
+      name: String,
+      val value: String
+    ) : Field(name)
+
+    class ListField(
+      name: String,
+      val value: List<Field>
+    ) : Field(name)
   }
 }

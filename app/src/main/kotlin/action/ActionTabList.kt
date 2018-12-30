@@ -16,7 +16,7 @@ fun EventTarget.actionTabList(
     hgrow = Priority.ALWAYS
     maxWidth = 360.0
     cellFormat { action ->
-      graphic = label(action.id) {
+      graphic = label(action.name) {
         addClass(AppStyle.actionListLabel)
       }
     }
