@@ -2,11 +2,11 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    implementation project(":entities")
-    implementation rootProject.ext.kotlin
-    implementation rootProject.ext.rxJava
+  implementation project(":network")
+  implementation rootProject.ext.kotlin
+  implementation rootProject.ext.rxJava
 }
