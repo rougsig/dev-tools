@@ -1,5 +1,7 @@
 package com.github.rougsig.devtools.app
 
+import tornadofx.launch
+
 fun main(args: Array<String>) {
-  println("Hello World")
+  launch<App>(args)
 }

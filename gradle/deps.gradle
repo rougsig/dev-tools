@@ -6,6 +6,10 @@ ext {
       "com.jakewharton.rxrelay2:rxrelay:2.1.0"
   ]
 
+  tornadoFX = [
+      "no.tornado:tornadofx:1.7.17"
+  ]
+
   core = [
       kotlin,
       rxJava

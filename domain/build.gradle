@@ -6,5 +6,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(":entities")
     implementation rootProject.ext.kotlin
+    implementation rootProject.ext.rxJava
 }

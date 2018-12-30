@@ -5,7 +5,13 @@ repositories {
   mavenCentral()
 }
 
+compileKotlin {
+  kotlinOptions.jvmTarget= 1.8
+}
+
 dependencies {
   implementation project(":core")
+  implementation project(":domain")
   implementation rootProject.ext.core
+  implementation rootProject.ext.tornadoFX
 }
