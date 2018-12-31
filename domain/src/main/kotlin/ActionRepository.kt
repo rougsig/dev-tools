@@ -35,6 +35,7 @@ class ActionRepository {
       .mapNotNull { key ->
         getField(obj.get(key), key)
       }
+      .sortedByDescending { it is Action.Field.StringField }
       .forEach { fields.add(it) }
 
     return fields

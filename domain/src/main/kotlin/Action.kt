@@ -13,6 +13,10 @@ data class Action(
   sealed class Field(
     open val name: String
   ) {
+    class ValueField(
+      val value: String
+    ): Field("")
+
     class StringField(
       name: String,
       val value: String

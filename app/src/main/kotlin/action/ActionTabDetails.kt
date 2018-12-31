@@ -22,10 +22,16 @@ fun EventTarget.actionTabDetails(
       converter = stringConverter { action.value.name }
     )
     treeview<Action.Field> {
-      root = TreeItem(Action.Field.StringField("Root", "Root"))
+      vgrow = Priority.ALWAYS
+      root = TreeItem(Action.Field.ValueField("Root"))
+
+      onDoubleClick {
+        root.expandAll()
+      }
 
       cellFormat {
         text = when (it) {
+          is Action.Field.ValueField -> it.value
           is Action.Field.ArrayField -> it.name
           is Action.Field.ObjectField -> it.name
           is Action.Field.StringField -> "${it.name}: ${it.value}"
