@@ -1,9 +1,9 @@
 package com.github.rougsig.devtools.app.action
 
-import com.github.rougsig.devtools.app.store.Action
 import com.github.rougsig.devtools.app.store.currentAction
 import com.github.rougsig.devtools.app.store.currentActionFields
 import com.github.rougsig.devtools.app.util.stringConverter
+import com.github.rougsig.devtools.domain.Action
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
@@ -26,7 +26,8 @@ fun EventTarget.actionTabDetails(
 
       cellFormat {
         text = when (it) {
-          is Action.Field.ListField -> it.name
+          is Action.Field.ArrayField -> it.name
+          is Action.Field.ObjectField -> it.name
           is Action.Field.StringField -> "${it.name}: ${it.value}"
         }
       }
@@ -34,7 +35,8 @@ fun EventTarget.actionTabDetails(
       populate { parent ->
         when {
           parent == root -> actionFields
-          parent.value is Action.Field.ListField -> (parent.value as Action.Field.ListField).value
+          parent.value is Action.Field.ObjectField -> (parent.value as Action.Field.ObjectField).value
+          parent.value is Action.Field.ArrayField -> (parent.value as Action.Field.ArrayField).value
           else -> null
         }
       }

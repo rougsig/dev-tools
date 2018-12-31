@@ -1,4 +1,4 @@
-package com.github.rougsig.devtools.app.store
+package com.github.rougsig.devtools.domain
 
 data class Action(
   val name: String,
@@ -18,7 +18,12 @@ data class Action(
       val value: String
     ) : Field(name)
 
-    class ListField(
+    class ObjectField(
+      name: String,
+      val value: List<Field>
+    ) : Field(name)
+
+    class ArrayField(
       name: String,
       val value: List<Field>
     ) : Field(name)

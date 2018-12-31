@@ -1,5 +1,6 @@
 ext {
   kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+  gson =  "com.google.code.gson:gson:2.8.5"
 
   rxJava = [
       "io.reactivex.rxjava2:rxjava:2.2.4",
@@ -17,6 +18,7 @@ ext {
 
   network = [
       "io.javalin:javalin:2.4.0",
-      "org.slf4j:slf4j-simple:1.7.25"
+      "org.slf4j:slf4j-simple:1.7.25",
+      gson
   ]
 }

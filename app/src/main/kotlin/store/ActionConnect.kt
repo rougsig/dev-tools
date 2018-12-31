@@ -1,6 +1,7 @@
 package com.github.rougsig.devtools.app.store
 
 import com.github.rougsig.devtools.app.util.subscribeOnUi
+import com.github.rougsig.devtools.domain.Action
 import com.github.rougsig.devtools.domain.ActionRepository
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -29,19 +30,5 @@ fun onActionClick(): (Action) -> Unit {
 private val connection = repo
   .actionLive()
   .subscribeOnUi { action ->
-    actions.add(
-      0, Action(
-        action, mutableListOf(
-          Action.Field.StringField("catCount", "1"),
-          Action.Field.StringField("duckCount", "2"),
-          Action.Field.ListField(
-            "list",
-            listOf(
-              Action.Field.StringField("catCount", "1"),
-              Action.Field.StringField("duckCount", "2")
-            )
-          )
-        )
-      )
-    )
+    actions.add(0, action)
   }

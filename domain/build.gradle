@@ -9,4 +9,5 @@ dependencies {
   implementation project(":network")
   implementation rootProject.ext.kotlin
   implementation rootProject.ext.rxJava
+  implementation rootProject.ext.gson
 }
