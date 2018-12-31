@@ -2,33 +2,36 @@ package com.github.rougsig.devtools.domain
 
 data class Action(
   val name: String,
-  val fields: List<Field>
+  val fields: List<Field>,
+  val diff: List<Pair<Field, Field>>
 ) {
   companion object {
     val EMPTY = Action(
-      "", mutableListOf()
+      "",
+      mutableListOf(),
+      mutableListOf()
     )
   }
 
   sealed class Field(
     open val name: String
   ) {
-    class ValueField(
+    data class ValueField(
       val value: String
-    ): Field("")
+    ) : Field("")
 
-    class StringField(
-      name: String,
+    data class StringField(
+      override val name: String,
       val value: String
     ) : Field(name)
 
-    class ObjectField(
-      name: String,
+    data class ObjectField(
+      override val name: String,
       val value: List<Field>
     ) : Field(name)
 
-    class ArrayField(
-      name: String,
+    data class ArrayField(
+      override val name: String,
       val value: List<Field>
     ) : Field(name)
   }

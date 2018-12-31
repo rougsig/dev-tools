@@ -7,15 +7,22 @@ import io.reactivex.Observable
 
 class ActionRepository {
   fun actionLive(): Observable<Action> {
-    return logLive().map { log ->
-      val name = log.name.split(".").takeLast(2).joinToString(".") { it }
-      val fields = getFields(log.obj)
-
-      Action(
-        name = name,
-        fields = fields
-      )
-    }
+    return logLive()
+      .map { log ->
+        val newStateFields = getFields(log.newState)
+        val previousStateFields = getFields(log.previousState)
+        val diffFrom = previousStateFields.minus(newStateFields)
+        val diffTo = newStateFields.minus(previousStateFields)
+        val diff = mutableListOf<Pair<Action.Field, Action.Field>>()
+        diffFrom.forEachIndexed { index, field ->
+          diff.add(field to diffTo[index])
+        }
+        Action(
+          name = getName(log.name),
+          fields = getFields(log.action),
+          diff = diff
+        )
+      }
   }
 
   private fun getFields(obj: JsonObject): List<Action.Field> {
@@ -39,5 +46,12 @@ class ActionRepository {
       .forEach { fields.add(it) }
 
     return fields
+  }
+
+  private fun getName(name: String): String {
+    return name
+      .split(".")
+      .takeLast(2)
+      .joinToString(".") { it }
   }
 }

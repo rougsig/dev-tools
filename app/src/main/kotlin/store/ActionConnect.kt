@@ -6,6 +6,7 @@ import com.github.rougsig.devtools.domain.ActionRepository
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
+import javafx.collections.ObservableList
 import tornadofx.observable
 
 private val repo = ActionRepository()
@@ -18,12 +19,16 @@ private val currentAction = SimpleObjectProperty(Action.EMPTY)
 fun currentAction(): ObservableValue<Action> = currentAction
 
 private val currentActionFields = SimpleListProperty<Action.Field>()
-fun currentActionFields() = currentActionFields
+fun currentActionFields(): ObservableList<Action.Field> = currentActionFields
+
+private val currentDiffFields = SimpleListProperty<Pair<Action.Field, Action.Field>>()
+fun currentDiffFields(): ObservableList<Pair<Action.Field, Action.Field>> = currentDiffFields
 
 fun onActionClick(): (Action) -> Unit {
   return { action ->
     currentAction.set(action)
     currentActionFields.set(action.fields.observable())
+    currentDiffFields.set(action.diff.observable())
   }
 }
 

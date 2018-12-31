@@ -4,5 +4,7 @@ import com.google.gson.JsonObject
 
 data class DevToolsLog(
   val name: String,
-  val obj: JsonObject
+  val action: JsonObject,
+  val newState: JsonObject,
+  val previousState: JsonObject
 )
