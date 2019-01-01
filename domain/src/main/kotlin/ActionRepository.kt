@@ -1,12 +1,16 @@
 package com.github.rougsig.devtools.domain
 
+import com.github.rougsig.devtools.network.logLive
 import com.github.rougsig.devtools.network.mockActions
 import com.google.gson.*
 import io.reactivex.Observable
 
 class ActionRepository {
   fun actionLive(): Observable<Action> {
-    return Observable.fromIterable(mockActions)
+    return Observable.merge(
+      Observable.fromIterable(mockActions),
+      logLive()
+    )
       .map { log ->
         Action(
           name = getName(log.name),
