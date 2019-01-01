@@ -21,11 +21,11 @@ fun actionLive(): Observable<Action> {
     }
 }
 
-private fun getField(el: JsonElement, key: String): Action.Field? {
+private fun getFieldDiff(el: JsonElement, key: String): Action.Field? {
   return when {
     el.isJsonPrimitive -> Action.Field.StringField(key, el.asString)
     el.isJsonNull -> Action.Field.StringField(key, "null")
-    el.isJsonArray -> Action.Field.ArrayField(key, el.asJsonArray.mapIndexedNotNull { i, el -> getField(el, "$i") })
+    el.isJsonArray -> Action.Field.ArrayField(key, el.asJsonArray.mapIndexedNotNull { i, it -> getFieldDiff(it, "$i") })
     el.isJsonObject -> Action.Field.ObjectField(key, getFields(el.asJsonObject))
     else -> null
   }
@@ -36,12 +36,51 @@ private fun getFields(obj: JsonObject): List<Action.Field> {
 
   obj.keySet()
     .mapNotNull { key ->
-      getField(obj.get(key), key)
+      getFieldDiff(obj.get(key), key)
     }
     .sortedByDescending { it is Action.Field.StringField }
     .forEach { fields.add(it) }
 
   return fields
+}
+
+private fun JsonElement.jsonNullToJsonType(mapTo: JsonElement): JsonElement {
+  return if (this == JsonNull.INSTANCE) {
+    when {
+      mapTo.isJsonObject -> JsonObject()
+      mapTo.isJsonPrimitive -> JsonPrimitive("null")
+      mapTo.isJsonArray -> JsonArray()
+      else -> JsonPrimitive("null")
+    }
+  } else {
+    this
+  }
+}
+
+private fun getFieldDiff(elFrom: JsonElement, elTo: JsonElement, key: String): Action.Field? {
+  return when {
+    elFrom.isJsonPrimitive && elTo.isJsonPrimitive ->
+      Action.Field.StringField(key, "${elFrom.asString} -> ${elTo.asString}")
+
+    elFrom.isJsonArray && elTo.isJsonArray -> {
+      val added = elTo.asJsonArray.minus(elFrom.asJsonArray)
+      val removed = elFrom.asJsonArray.minus(elTo.asJsonArray)
+      val list = mutableListOf<JsonElement>()
+        .apply {
+          addAll(added)
+          addAll(removed)
+        }
+        .mapNotNull { el ->
+          getFieldDiff(el, if (added.contains(el)) "Added" else "Removed")
+        }
+      Action.Field.ArrayField(key, list)
+    }
+
+    elFrom.isJsonObject && elTo.isJsonObject ->
+      Action.Field.ObjectField(key, getDiff(elFrom.asJsonObject, elTo.asJsonObject))
+
+    else -> null
+  }
 }
 
 private fun getDiff(from: JsonObject, to: JsonObject): List<Action.Field> {
@@ -52,56 +91,17 @@ private fun getDiff(from: JsonObject, to: JsonObject): List<Action.Field> {
     addAll(to.keySet())
   }
 
-  fun getField(elFrom: JsonElement, elTo: JsonElement, key: String): Action.Field? {
-    return when {
-      elFrom.isJsonPrimitive && elTo.isJsonPrimitive ->
-        Action.Field.StringField(key, "${elFrom.asString} -> ${elTo.asString}")
-
-      elFrom.isJsonArray && elTo.isJsonArray -> {
-        val added = elTo.asJsonArray.minus(elFrom.asJsonArray)
-        val removed = elFrom.asJsonArray.minus(elTo.asJsonArray)
-        val list = mutableListOf<JsonElement>()
-          .apply {
-            addAll(added)
-            addAll(removed)
-          }
-          .mapNotNull { el ->
-            getField(el, if (added.contains(el)) "Added" else "Removed")
-          }
-        Action.Field.ArrayField(key, list)
-      }
-
-      elFrom.isJsonObject && elTo.isJsonObject ->
-        Action.Field.ObjectField(key, getDiff(elFrom.asJsonObject, elTo.asJsonObject))
-
-      else -> null
-    }
-  }
-
   keys
     .mapNotNull { key ->
-      var elFrom = from.get(key) ?: JsonNull.INSTANCE
-      var elTo = to.get(key) ?: JsonNull.INSTANCE
+      val elFrom = from.get(key) ?: JsonNull.INSTANCE
+      val elTo = to.get(key) ?: JsonNull.INSTANCE
 
       if (elFrom != elTo) {
-        if (elFrom == JsonNull.INSTANCE) {
-          elFrom = when {
-            elTo?.isJsonObject == true -> JsonObject()
-            elTo?.isJsonPrimitive == true -> JsonPrimitive("null")
-            elTo?.isJsonArray == true -> JsonArray()
-            else -> JsonPrimitive("null")
-          }
-        }
-
-        if (elTo == JsonNull.INSTANCE) {
-          elTo = when {
-            elFrom.isJsonObject -> JsonObject()
-            elFrom.isJsonPrimitive -> JsonPrimitive("null")
-            elFrom.isJsonArray -> JsonArray()
-            else -> JsonPrimitive("null")
-          }
-        }
-        getField(elFrom, elTo, key)
+        getFieldDiff(
+          elFrom.jsonNullToJsonType(elTo),
+          elTo.jsonNullToJsonType(elFrom),
+          key
+        )
       } else {
         null
       }
