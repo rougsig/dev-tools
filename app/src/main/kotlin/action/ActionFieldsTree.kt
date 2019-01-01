@@ -28,26 +28,36 @@ fun EventTarget.actionFieldsTree(
         is Action.Field.ObjectField -> label(it.name)
         is Action.Field.ArrayField -> label(it.name)
         is Action.Field.DiffField -> hbox {
-          label("${it.name}:") {
+          if (it.previousValue == null || it.nextValue == null) {
             if (it.previousValue != null && it.nextValue == null) {
-              addClass(AppStyle.diffTreeRemoved)
+              label("${it.name}: ${it.previousValue}") {
+                addClass(AppStyle.diffTreeRemoved)
+              }
             }
             if (it.nextValue != null && it.previousValue == null) {
-              addClass(AppStyle.diffTreeAdded)
-            }
-          }
-          it.previousValue?.let { value ->
-            label(value) {
-              addClass(AppStyle.diffTreeRemoved)
-            }
-          }
-          if (it.previousValue != null && it.nextValue != null) {
-            label(" -> ")
-          }
-          it.nextValue?.let { value ->
-            label(value) {
-              style {
+              label("${it.name}: ${it.nextValue}") {
                 addClass(AppStyle.diffTreeAdded)
+              }
+            }
+          } else {
+            label("${it.name}:") {
+              style {
+                padding = box(0.px, 4.px, 0.px, 0.px)
+              }
+            }
+            it.previousValue?.let { value ->
+              label(value) {
+                addClass(AppStyle.diffTreeRemoved)
+              }
+            }
+            if (it.previousValue != null && it.nextValue != null) {
+              label(" -> ")
+            }
+            it.nextValue?.let { value ->
+              label(value) {
+                style {
+                  addClass(AppStyle.diffTreeAdded)
+                }
               }
             }
           }
