@@ -9,7 +9,6 @@ import javafx.scene.layout.Priority
 import tornadofx.hgrow
 import tornadofx.label
 import tornadofx.vbox
-import tornadofx.vgrow
 
 fun EventTarget.actionTabDetails(
   action: ObservableValue<Action>

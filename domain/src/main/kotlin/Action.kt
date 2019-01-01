@@ -1,9 +1,11 @@
 package com.github.rougsig.devtools.domain
 
+import java.lang.reflect.Field
+
 data class Action(
   val name: String,
   val fields: List<Field>,
-  val diff: List<Pair<Field, Field>>
+  val diff: List<Field>
 ) {
   companion object {
     val EMPTY = Action(

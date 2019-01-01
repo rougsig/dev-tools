@@ -21,8 +21,8 @@ fun currentAction(): ObservableValue<Action> = currentAction
 private val currentActionFields = SimpleListProperty<Action.Field>()
 fun currentActionFields(): ObservableList<Action.Field> = currentActionFields
 
-private val currentDiffFields = SimpleListProperty<Pair<Action.Field, Action.Field>>()
-fun currentDiffFields(): ObservableList<Pair<Action.Field, Action.Field>> = currentDiffFields
+private val currentDiffFields =SimpleListProperty<Action.Field>()
+fun currentDiffFields(): ObservableList<Action.Field> = currentDiffFields
 
 fun onActionClick(): (Action) -> Unit {
   return { action ->
