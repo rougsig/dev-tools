@@ -3,6 +3,7 @@ package com.github.rougsig.devtools.app.action
 import com.github.rougsig.devtools.app.AppStyle
 import com.github.rougsig.devtools.app.store.currentActionFields
 import com.github.rougsig.devtools.domain.Action
+import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
 import javafx.scene.control.TreeItem
@@ -62,6 +63,10 @@ fun EventTarget.actionFieldsTree(
         else -> null
       }
     }
+
+    actionFields.addListener(ListChangeListener {
+      root.expandAll()
+    })
   }
 }
 
