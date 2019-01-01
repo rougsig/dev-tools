@@ -3,7 +3,7 @@ package com.github.rougsig.devtools.app.store
 import com.github.rougsig.devtools.app.util.selectList
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.Action
-import com.github.rougsig.devtools.domain.ActionRepository
+import com.github.rougsig.devtools.domain.actionLive
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
@@ -30,10 +30,7 @@ fun currentActionNewState(): ObservableList<Action.Field> = currentActionNewStat
 private val onActionClick = { action: Action -> currentAction.set(action) }
 fun onActionClick(): (Action) -> Unit = onActionClick
 
-private val repo = ActionRepository()
 @Suppress("Unused")
-private val connection = repo
-  .actionLive()
-  .subscribeOnUi { action ->
-    actions.add(0, action)
-  }
+private val connection = actionLive().subscribeOnUi { action ->
+  actions.add(0, action)
+}

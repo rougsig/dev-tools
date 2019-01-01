@@ -8,6 +8,7 @@ import io.reactivex.Observable
 
 private val gson = Gson()
 
+@Suppress("Unused")
 private val ws = Javalin.create()
   .ws("/") { ws ->
     ws.onMessage { _, msg ->
@@ -126,4 +127,4 @@ private val json = """
 val mockActions = gson.fromJson<List<DevToolsLog>>(
   json,
   TypeToken.getParameterized(List::class.java, DevToolsLog::class.java).type
-)
+)!!
