@@ -1,29 +1,29 @@
 package com.github.rougsig.devtools.app.action
 
-import com.github.rougsig.devtools.app.store.currentAction
-import com.github.rougsig.devtools.app.util.stringConverter
-import com.github.rougsig.devtools.domain.Action
-import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
 import tornadofx.hgrow
-import tornadofx.label
-import tornadofx.vbox
+import tornadofx.tab
+import tornadofx.tabpane
 
-fun EventTarget.actionTabDetails(
-  action: ObservableValue<Action>
-) {
-  vbox {
+fun EventTarget.actionTabDetails() {
+  tabpane {
     hgrow = Priority.ALWAYS
-    label(
-      observable = action,
-      converter = stringConverter { action.value.name }
-    )
-    actionFieldsTree()
-    actionStateDiff()
+    tab("action") {
+      isClosable = false
+      actionFieldsTree()
+    }
+    tab("state diff") {
+      isClosable = false
+      actionStateDiff()
+    }
+    tab("previous state") {
+      isClosable = false
+      actionPreviousState()
+    }
+    tab("new state") {
+      isClosable = false
+      actionNewState()
+    }
   }
 }
-
-fun EventTarget.actionTabDetails() = actionTabDetails(
-  currentAction()
-)

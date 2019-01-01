@@ -1,15 +1,17 @@
 package com.github.rougsig.devtools.domain
 
-import java.lang.reflect.Field
-
 data class Action(
   val name: String,
   val fields: List<Field>,
+  val newState: List<Field>,
+  val previousState: List<Field>,
   val diff: List<Field>
 ) {
   companion object {
     val EMPTY = Action(
       "",
+      mutableListOf(),
+      mutableListOf(),
       mutableListOf(),
       mutableListOf()
     )

@@ -5,7 +5,7 @@ import tornadofx.hbox
 import tornadofx.tab
 
 fun TabPane.actionTab() {
-  tab("action") {
+  tab("action logs") {
     isClosable = false
     hbox {
       actionTabList()

@@ -6,7 +6,7 @@ import tornadofx.label
 import tornadofx.tab
 
 fun TabPane.scopeTab() {
-  tab("Scope") {
+  tab("scope logs") {
     isClosable = false
     hbox {
       label("1")
