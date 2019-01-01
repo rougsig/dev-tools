@@ -3,7 +3,7 @@ package com.github.rougsig.devtools.domain
 data class Action(
   val name: String,
   val fields: List<Field>,
-  val newState: List<Field>,
+  val nextState: List<Field>,
   val previousState: List<Field>,
   val diff: List<Field>
 ) {
@@ -42,7 +42,7 @@ data class Action(
     data class DiffField(
       override val name: String,
       val previousValue: String?,
-      val newValue: String?
+      val nextValue: String?
     ) : Field(name)
   }
 }

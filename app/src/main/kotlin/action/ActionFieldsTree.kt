@@ -28,10 +28,10 @@ fun EventTarget.actionFieldsTree(
         is Action.Field.ArrayField -> label(it.name)
         is Action.Field.DiffField -> hbox {
           label("${it.name}:") {
-            if (it.previousValue != null && it.newValue == null) {
+            if (it.previousValue != null && it.nextValue == null) {
               addClass(AppStyle.diffTreeRemoved)
             }
-            if (it.newValue != null && it.previousValue == null) {
+            if (it.nextValue != null && it.previousValue == null) {
               addClass(AppStyle.diffTreeAdded)
             }
           }
@@ -40,10 +40,10 @@ fun EventTarget.actionFieldsTree(
               addClass(AppStyle.diffTreeRemoved)
             }
           }
-          if (it.previousValue != null && it.newValue != null) {
+          if (it.previousValue != null && it.nextValue != null) {
             label(" -> ")
           }
-          it.newValue?.let { value ->
+          it.nextValue?.let { value ->
             label(value) {
               style {
                 addClass(AppStyle.diffTreeAdded)

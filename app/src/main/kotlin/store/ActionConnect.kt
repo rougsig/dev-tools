@@ -24,8 +24,8 @@ fun currentDiffFields(): ObservableList<Action.Field> = currentDiffFields
 private val currentActionPreviousState = currentAction.selectList { it.previousState }
 fun currentActionPreviousState(): ObservableList<Action.Field> = currentActionPreviousState
 
-private val currentActionNewState = currentAction.selectList { it.newState }
-fun currentActionNewState(): ObservableList<Action.Field> = currentActionNewState
+private val currentActionNextState = currentAction.selectList { it.nextState }
+fun currentActionNextState(): ObservableList<Action.Field> = currentActionNextState
 
 private val onActionClick = { action: Action -> currentAction.set(action) }
 fun onActionClick(): (Action) -> Unit = onActionClick

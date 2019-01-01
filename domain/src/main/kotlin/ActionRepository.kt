@@ -15,7 +15,7 @@ fun actionLive(): Observable<Action> {
         name = getName(log.name),
         fields = getFields(log.action),
         previousState = getFields(log.previousState),
-        newState = getFields(log.newState),
+        nextState = getFields(log.newState),
         diff = getDiff(log.previousState, log.newState)
       )
     }

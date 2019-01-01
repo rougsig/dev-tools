@@ -21,9 +21,9 @@ fun EventTarget.actionTabDetails() {
       isClosable = false
       actionStateDiff()
     }
-    tab("new state") {
+    tab("next state") {
       isClosable = false
-      actionNewState()
+      actionNextState()
     }
   }
 }
