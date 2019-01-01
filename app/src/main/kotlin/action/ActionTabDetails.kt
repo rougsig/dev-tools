@@ -13,13 +13,13 @@ fun EventTarget.actionTabDetails() {
       isClosable = false
       actionFieldsTree()
     }
-    tab("state diff") {
-      isClosable = false
-      actionStateDiff()
-    }
     tab("previous state") {
       isClosable = false
       actionPreviousState()
+    }
+    tab("state diff") {
+      isClosable = false
+      actionStateDiff()
     }
     tab("new state") {
       isClosable = false
