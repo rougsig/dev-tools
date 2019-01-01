@@ -13,18 +13,38 @@ fun EventTarget.actionFieldsTree(
 ) {
   treeview<Action.Field> {
     vgrow = Priority.ALWAYS
-    root = TreeItem(Action.Field.ValueField("Root"))
+    root = TreeItem(Action.Field.NameField("Root"))
 
     onDoubleClick {
       root.expandAll()
     }
 
     cellFormat {
-      text = when (it) {
-        is Action.Field.ValueField -> it.value
-        is Action.Field.ArrayField -> it.name
-        is Action.Field.ObjectField -> it.name
-        is Action.Field.StringField -> "${it.name}: ${it.value}"
+      graphic = when (it) {
+        is Action.Field.NameField -> label(it.name)
+        is Action.Field.StringField -> label("${it.name}: ${it.value}")
+        is Action.Field.ObjectField -> label(it.name)
+        is Action.Field.ArrayField -> label(it.name)
+        is Action.Field.DiffField -> hbox {
+          label("${it.name}:")
+          it.previousValue?.let { value ->
+            label(value) {
+              style {
+                backgroundColor += c("#ff0000")
+              }
+            }
+          }
+          if (it.previousValue != null && it.newValue != null) {
+            label(" -> ")
+          }
+          it.newValue?.let { value ->
+            label(value) {
+              style {
+                backgroundColor += c("#00ff00")
+              }
+            }
+          }
+        }
       }
     }
 

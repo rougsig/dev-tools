@@ -20,9 +20,9 @@ data class Action(
   sealed class Field(
     open val name: String
   ) {
-    data class ValueField(
-      val value: String
-    ) : Field("")
+    data class NameField(
+      override val name: String
+    ) : Field(name)
 
     data class StringField(
       override val name: String,
@@ -37,6 +37,12 @@ data class Action(
     data class ArrayField(
       override val name: String,
       val value: List<Field>
+    ) : Field(name)
+
+    data class DiffField(
+      override val name: String,
+      val previousValue: String?,
+      val newValue: String?
     ) : Field(name)
   }
 }

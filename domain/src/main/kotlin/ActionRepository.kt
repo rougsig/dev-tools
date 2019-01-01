@@ -21,22 +21,34 @@ fun actionLive(): Observable<Action> {
     }
 }
 
-private fun getFieldDiff(el: JsonElement, key: String): Action.Field? {
-  return when {
-    el.isJsonPrimitive -> Action.Field.StringField(key, el.asString)
-    el.isJsonNull -> Action.Field.StringField(key, "null")
-    el.isJsonArray -> Action.Field.ArrayField(key, el.asJsonArray.mapIndexedNotNull { i, it -> getFieldDiff(it, "$i") })
-    el.isJsonObject -> Action.Field.ObjectField(key, getFields(el.asJsonObject))
-    else -> null
-  }
-}
-
 private fun getFields(obj: JsonObject): List<Action.Field> {
   val fields = mutableListOf<Action.Field>()
 
+  fun getField(el: JsonElement, key: String): Action.Field? {
+    return when {
+      el.isJsonPrimitive ->
+        Action.Field.StringField(key, el.asString)
+
+      el.isJsonNull ->
+        Action.Field.StringField(key, "null")
+
+      el.isJsonArray ->
+        Action.Field.ArrayField(
+          key,
+          el.asJsonArray
+            .mapIndexedNotNull { i, it -> getField(it, "$i") }
+        )
+
+      el.isJsonObject ->
+        Action.Field.ObjectField(key, getFields(el.asJsonObject))
+
+      else -> null
+    }
+  }
+
   obj.keySet()
     .mapNotNull { key ->
-      getFieldDiff(obj.get(key), key)
+      getField(obj.get(key), key)
     }
     .sortedByDescending { it is Action.Field.StringField }
     .forEach { fields.add(it) }
@@ -58,9 +70,35 @@ private fun JsonElement.jsonNullToJsonType(mapTo: JsonElement): JsonElement {
 }
 
 private fun getFieldDiff(elFrom: JsonElement, elTo: JsonElement, key: String): Action.Field? {
+  fun getField(el: JsonElement, key: String, isAdded: Boolean): Action.Field? {
+    return when {
+      el.isJsonPrimitive ->
+        Action.Field.DiffField(
+          key,
+          if (isAdded) null else el.asString,
+          if (isAdded) el.asString else null
+        )
+
+      el.isJsonNull ->
+        Action.Field.StringField(key, "null")
+
+      el.isJsonArray ->
+        Action.Field.ArrayField(
+          key,
+          el.asJsonArray
+            .mapIndexedNotNull { i, it -> getField(it, "$i", isAdded) }
+        )
+
+      el.isJsonObject ->
+        Action.Field.ObjectField(key, getFields(el.asJsonObject))
+
+      else -> null
+    }
+  }
+
   return when {
     elFrom.isJsonPrimitive && elTo.isJsonPrimitive ->
-      Action.Field.StringField(key, "${elFrom.asString} -> ${elTo.asString}")
+      Action.Field.DiffField(key, elFrom.asString, elTo.asString)
 
     elFrom.isJsonArray && elTo.isJsonArray -> {
       val added = elTo.asJsonArray.minus(elFrom.asJsonArray)
@@ -70,8 +108,8 @@ private fun getFieldDiff(elFrom: JsonElement, elTo: JsonElement, key: String): A
           addAll(added)
           addAll(removed)
         }
-        .mapNotNull { el ->
-          getFieldDiff(el, if (added.contains(el)) "Added" else "Removed")
+        .mapIndexedNotNull { i, it ->
+          getField(it, "$i", added.contains(it))
         }
       Action.Field.ArrayField(key, list)
     }
