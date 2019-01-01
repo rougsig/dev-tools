@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.action
 
+import com.github.rougsig.devtools.app.AppStyle
 import com.github.rougsig.devtools.app.store.currentActionFields
 import com.github.rougsig.devtools.domain.Action
 import javafx.collections.ObservableList
@@ -26,12 +27,17 @@ fun EventTarget.actionFieldsTree(
         is Action.Field.ObjectField -> label(it.name)
         is Action.Field.ArrayField -> label(it.name)
         is Action.Field.DiffField -> hbox {
-          label("${it.name}:")
+          label("${it.name}:") {
+            if (it.previousValue != null && it.newValue == null) {
+              addClass(AppStyle.diffTreeRemoved)
+            }
+            if (it.newValue != null && it.previousValue == null) {
+              addClass(AppStyle.diffTreeAdded)
+            }
+          }
           it.previousValue?.let { value ->
             label(value) {
-              style {
-                backgroundColor += c("#ff0000")
-              }
+              addClass(AppStyle.diffTreeRemoved)
             }
           }
           if (it.previousValue != null && it.newValue != null) {
@@ -40,7 +46,7 @@ fun EventTarget.actionFieldsTree(
           it.newValue?.let { value ->
             label(value) {
               style {
-                backgroundColor += c("#00ff00")
+                addClass(AppStyle.diffTreeAdded)
               }
             }
           }
