@@ -25,5 +25,11 @@ fun EventTarget.actionTabDetails() {
       isClosable = false
       actionNextState()
     }
+    tab("image") {
+      actionImage(
+        widthProperty(),
+        heightProperty()
+      )
+    }
   }
 }

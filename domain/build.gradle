@@ -5,6 +5,10 @@ repositories {
   mavenCentral()
 }
 
+compileKotlin {
+  kotlinOptions.jvmTarget= 1.8
+}
+
 dependencies {
   implementation project(":network")
   implementation rootProject.ext.kotlin

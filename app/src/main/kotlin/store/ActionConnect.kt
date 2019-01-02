@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.store
 
+import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.app.util.selectList
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.Action
@@ -7,6 +8,7 @@ import com.github.rougsig.devtools.domain.actionLive
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
+import javafx.scene.image.Image
 import tornadofx.observable
 
 private val actions = mutableListOf<Action>().observable()
@@ -26,6 +28,9 @@ fun currentActionPreviousState(): ObservableList<Action.Field> = currentActionPr
 
 private val currentActionNextState = currentAction.selectList { it.nextState }
 fun currentActionNextState(): ObservableList<Action.Field> = currentActionNextState
+
+private val currentActionPreviousStateImage = currentAction.select { it.previousStateImage }
+fun currentActionPreviousStateImage(): ObservableValue<Image> = currentActionPreviousStateImage
 
 private val onActionClick = { action: Action -> currentAction.set(action) }
 fun onActionClick(): (Action) -> Unit = onActionClick

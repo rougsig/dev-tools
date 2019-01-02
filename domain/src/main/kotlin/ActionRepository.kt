@@ -4,6 +4,9 @@ import com.github.rougsig.devtools.network.logLive
 import com.github.rougsig.devtools.network.mockActions
 import com.google.gson.*
 import io.reactivex.Observable
+import javafx.scene.image.Image
+import sun.misc.BASE64Decoder
+import java.io.ByteArrayInputStream
 
 fun actionLive(): Observable<Action> {
   return Observable.merge(
@@ -15,8 +18,10 @@ fun actionLive(): Observable<Action> {
         name = getName(log.name),
         fields = getFields(log.action),
         previousState = getFields(log.previousState),
-        nextState = getFields(log.newState),
-        diff = getDiff(log.previousState, log.newState)
+        nextState = getFields(log.nextState),
+        diff = getDiff(log.previousState, log.nextState),
+        previousStateImage = getImage(log.previousStateScreenShot),
+        nextStateImage = getImage(log.nextStateScreenShot)
       )
     }
 }
@@ -155,4 +160,8 @@ private fun getName(name: String): String {
     .split(".")
     .takeLast(2)
     .joinToString(".") { it }
+}
+
+private fun getImage(base64: String): Image {
+  return Image(ByteArrayInputStream(BASE64Decoder().decodeBuffer(base64)))
 }
