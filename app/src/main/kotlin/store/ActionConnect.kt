@@ -32,6 +32,9 @@ fun currentActionNextState(): ObservableList<Action.Field> = currentActionNextSt
 private val currentActionPreviousStateImage = currentAction.select { it.previousStateImage }
 fun currentActionPreviousStateImage(): ObservableValue<Image> = currentActionPreviousStateImage
 
+private val currentActionNextStateImage = currentAction.select { it.nextStateImage }
+fun currentActionNextStateImage(): ObservableValue<Image> = currentActionNextStateImage
+
 private val onActionClick = { action: Action -> currentAction.set(action) }
 fun onActionClick(): (Action) -> Unit = onActionClick
 

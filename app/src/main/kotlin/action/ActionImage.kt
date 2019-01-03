@@ -1,30 +1,29 @@
 package com.github.rougsig.devtools.app.action
 
+import com.github.rougsig.devtools.app.store.currentActionNextStateImage
 import com.github.rougsig.devtools.app.store.currentActionPreviousStateImage
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.image.Image
 import javafx.scene.layout.Priority
-import tornadofx.hgrow
-import tornadofx.imageview
+import tornadofx.*
 
 fun EventTarget.actionImage(
-  image: ObservableValue<Image>,
-  width: ObservableValue<Number>,
-  height: ObservableValue<Number>
+  previousImage: ObservableValue<Image>,
+  nextImage: ObservableValue<Image>
 ) {
-  imageview(image as ObservableValue<Image?>) {
-    isPreserveRatio = true
-    fitHeightProperty().bind(height)
+  hbox {
     hgrow = Priority.ALWAYS
+    imageview(previousImage as ObservableValue<Image?>) {
+      isPreserveRatio = true
+    }
+    imageview(nextImage as ObservableValue<Image?>) {
+      isPreserveRatio = true
+    }
   }
 }
 
-fun EventTarget.actionImage(
-  width: ObservableValue<Number>,
-  height: ObservableValue<Number>
-) = actionImage(
+fun EventTarget.actionImage() = actionImage(
   currentActionPreviousStateImage(),
-  width,
-  height
+  currentActionNextStateImage()
 )

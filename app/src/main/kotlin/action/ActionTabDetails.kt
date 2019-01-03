@@ -26,10 +26,7 @@ fun EventTarget.actionTabDetails() {
       actionNextState()
     }
     tab("image") {
-      actionImage(
-        widthProperty(),
-        heightProperty()
-      )
+      actionImage()
     }
   }
 }
