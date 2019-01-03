@@ -19,9 +19,7 @@ fun actionLive(): Observable<Action> {
         fields = getFields(log.action),
         previousState = getFields(log.previousState),
         nextState = getFields(log.nextState),
-        diff = getDiff(log.previousState, log.nextState),
-        previousStateImage = getImage(log.previousStateScreenShot),
-        nextStateImage = getImage(log.nextStateScreenShot)
+        diff = getDiff(log.previousState, log.nextState)
       )
     }
 }
@@ -160,8 +158,4 @@ private fun getName(name: String): String {
     .split(".")
     .takeLast(2)
     .joinToString(".") { it }
-}
-
-private fun getImage(base64: String): Image {
-  return Image(ByteArrayInputStream(BASE64Decoder().decodeBuffer(base64)))
 }

@@ -8,9 +8,7 @@ data class Action(
   val fields: List<Field>,
   val nextState: List<Field>,
   val previousState: List<Field>,
-  val diff: List<Field>,
-  val nextStateImage: Image,
-  val previousStateImage: Image
+  val diff: List<Field>
 ) {
   companion object {
     private val emptyImage = Image(ByteArrayInputStream(ByteArray(0)))
@@ -20,9 +18,7 @@ data class Action(
       mutableListOf(),
       mutableListOf(),
       mutableListOf(),
-      mutableListOf(),
-      emptyImage,
-      emptyImage
+      mutableListOf()
     )
   }
 
