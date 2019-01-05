@@ -1,7 +1,6 @@
 package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.AppStyle
-import com.github.rougsig.devtools.app.store.actionNames
 import com.github.rougsig.devtools.app.store.actions
 import com.github.rougsig.devtools.app.store.onActionClick
 import com.github.rougsig.devtools.domain.Action

@@ -1,15 +1,14 @@
 package com.github.rougsig.devtools.domain
 
+import com.github.rougsig.devtools.network.DevToolsLog
 import com.github.rougsig.devtools.network.logLive
 import com.github.rougsig.devtools.network.mockActions
 import com.google.gson.*
 import io.reactivex.Observable
-import javafx.scene.image.Image
-import sun.misc.BASE64Decoder
-import java.io.ByteArrayInputStream
 
 fun actionLive(): Observable<Action> {
   return Observable.merge(
+    Observable.just(DevToolsLog.INIT),
     Observable.fromIterable(mockActions),
     logLive()
   )
@@ -19,7 +18,8 @@ fun actionLive(): Observable<Action> {
         fields = getFields(log.action),
         previousState = getFields(log.previousState),
         nextState = getFields(log.nextState),
-        diff = getDiff(log.previousState, log.nextState)
+        diff = getDiff(log.previousState, log.nextState),
+        time = System.currentTimeMillis().toString()
       )
     }
 }

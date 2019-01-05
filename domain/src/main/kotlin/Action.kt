@@ -8,7 +8,9 @@ data class Action(
   val fields: List<Field>,
   val nextState: List<Field>,
   val previousState: List<Field>,
-  val diff: List<Field>
+  val diff: List<Field>,
+  @Transient
+  val time: String? = null
 ) {
   companion object {
     private val emptyImage = Image(ByteArrayInputStream(ByteArray(0)))

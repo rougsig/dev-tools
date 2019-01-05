@@ -7,6 +7,15 @@ data class DevToolsLog(
   val action: JsonObject,
   val nextState: JsonObject,
   val previousState: JsonObject,
-  val nextStateScreenShot: String,      // Image in Base64
-  val previousStateScreenShot: String   // Image in Base64
-)
+  val nextStateScreenShot: String? = null,      // Image in Base64
+  val previousStateScreenShot: String? = null  // Image in Base64
+) {
+  companion object {
+    val INIT = DevToolsLog(
+      name = "Init",
+      action = JsonObject(),
+      nextState = JsonObject(),
+      previousState = JsonObject()
+    )
+  }
+}
