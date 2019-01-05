@@ -1,6 +1,7 @@
 package com.github.rougsig.devtools.app
 
 import com.github.rougsig.devtools.app.action.actionTab
+import com.github.rougsig.devtools.app.info.infoTab
 import tornadofx.View
 import tornadofx.fitToParentSize
 import tornadofx.hbox
@@ -18,6 +19,7 @@ internal class RootView : View() {
       fitToParentSize()
 
       actionTab()
+      infoTab()
     }
   }
 }
