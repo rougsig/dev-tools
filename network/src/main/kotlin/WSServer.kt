@@ -21,3 +21,7 @@ private val action = PublishRelay.create<DevToolsLog>()
 fun logLive(): Observable<DevToolsLog> = action
 
 val mockActions = emptyList<DevToolsLog>()
+
+fun stopWs() {
+  ws.stop()
+}

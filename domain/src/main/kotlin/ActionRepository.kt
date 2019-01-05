@@ -3,6 +3,7 @@ package com.github.rougsig.devtools.domain
 import com.github.rougsig.devtools.network.DevToolsLog
 import com.github.rougsig.devtools.network.logLive
 import com.github.rougsig.devtools.network.mockActions
+import com.github.rougsig.devtools.network.stopWs
 import com.google.gson.*
 import io.reactivex.Observable
 
@@ -159,3 +160,5 @@ private fun getName(name: String): String {
     .takeLast(2)
     .joinToString(".") { it }
 }
+
+fun stopServer(): Unit = stopWs()
