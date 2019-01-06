@@ -15,7 +15,7 @@ private val ws = Javalin.create()
       action.accept(log)
     }
   }
-  .start(1002)
+  .start(10002)
 
 private val action = PublishRelay.create<DevToolsLog>()
 fun logLive(): Observable<DevToolsLog> = action
