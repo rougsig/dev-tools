@@ -2,7 +2,7 @@ package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.AppStyle
 import com.github.rougsig.devtools.app.store.currentActionFields
-import com.github.rougsig.devtools.domain.Action
+import com.github.rougsig.devtools.domain.Field
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
@@ -11,11 +11,11 @@ import javafx.scene.layout.Priority
 import tornadofx.*
 
 fun EventTarget.actionFieldsTree(
-  actionFields: ObservableList<Action.Field>
+  actionFields: ObservableList<Field>
 ) {
-  treeview<Action.Field> {
+  treeview<Field> {
     vgrow = Priority.ALWAYS
-    root = TreeItem(Action.Field.NameField("Root"))
+    root = TreeItem(Field.NameField("Root"))
 
     onDoubleClick {
       root.expandAll()
@@ -23,11 +23,11 @@ fun EventTarget.actionFieldsTree(
 
     cellFormat {
       graphic = when (it) {
-        is Action.Field.NameField -> label(it.name)
-        is Action.Field.StringField -> label("${it.name}: ${it.value}")
-        is Action.Field.ObjectField -> label(it.name)
-        is Action.Field.ArrayField -> label(it.name)
-        is Action.Field.DiffField -> hbox {
+        is Field.NameField -> label(it.name)
+        is Field.StringField -> label("${it.name}: ${it.value}")
+        is Field.ObjectField -> label(it.name)
+        is Field.ArrayField -> label(it.name)
+        is Field.DiffField -> hbox {
           if (it.previousValue == null || it.nextValue == null) {
             if (it.previousValue != null && it.nextValue == null) {
               label("${it.name}: ${it.previousValue}") {
@@ -68,8 +68,8 @@ fun EventTarget.actionFieldsTree(
     populate { parent ->
       when {
         parent == root -> actionFields
-        parent.value is Action.Field.ObjectField -> (parent.value as Action.Field.ObjectField).value
-        parent.value is Action.Field.ArrayField -> (parent.value as Action.Field.ArrayField).value
+        parent.value is Field.ObjectField -> (parent.value as Field.ObjectField).value
+        parent.value is Field.ArrayField -> (parent.value as Field.ArrayField).value
         else -> null
       }
     }

@@ -11,16 +11,23 @@ private val gson = Gson()
 private val ws = Javalin.create()
   .ws("/") { ws ->
     ws.onMessage { _, msg ->
-      val log = gson.fromJson(msg, DevToolsLog::class.java)
-      action.accept(log)
+      val type = gson.fromJson(msg, TypeLog::class.java).type
+      when (type) {
+        "action" -> actionStream.accept(gson.fromJson(msg, ActionLog::class.java))
+        "scope" -> scopeStream.accept(gson.fromJson(msg, ScopeLog::class.java))
+      }
+      println(type)
     }
   }
   .start(10002)
 
-private val action = PublishRelay.create<DevToolsLog>()
-fun logLive(): Observable<DevToolsLog> = action
+private val actionStream = PublishRelay.create<ActionLog>()
+fun actionLive(): Observable<ActionLog> = actionStream
 
-val mockActions = emptyList<DevToolsLog>()
+private val scopeStream = PublishRelay.create<ScopeLog>()
+fun scopeLive(): Observable<ScopeLog> = scopeStream
+
+val mockActions = emptyList<ActionLog>()
 
 fun stopWs() {
   ws.stop()
