@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.info
 
+import javafx.geometry.Pos
 import javafx.scene.control.TabPane
 import tornadofx.label
 import tornadofx.tab
@@ -15,6 +16,7 @@ fun TabPane.infoTab() {
       getInetAddresses().forEach {
         label(it.hostAddress)
       }
+      alignment = Pos.CENTER
     }
   }
 }
