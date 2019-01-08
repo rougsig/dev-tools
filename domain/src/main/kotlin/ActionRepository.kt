@@ -1,14 +1,12 @@
 package com.github.rougsig.devtools.domain
 
-import com.github.rougsig.devtools.network.ActionLog
+import com.github.rougsig.devtools.network.LogEntry
 import com.github.rougsig.devtools.network.actionLive
-import com.github.rougsig.devtools.network.mockActions
 import io.reactivex.Observable
 
 fun actionLive(): Observable<Action> {
   return Observable.merge(
-    Observable.just(ActionLog.INIT),
-    Observable.fromIterable(mockActions),
+    Observable.just(LogEntry.Action.INIT),
     actionLive()
   )
     .map { log ->

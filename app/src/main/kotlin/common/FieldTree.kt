@@ -1,7 +1,6 @@
-package com.github.rougsig.devtools.app.action
+package com.github.rougsig.devtools.app.common
 
 import com.github.rougsig.devtools.app.AppStyle
-import com.github.rougsig.devtools.app.store.currentActionFields
 import com.github.rougsig.devtools.domain.Field
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
@@ -10,7 +9,7 @@ import javafx.scene.control.TreeItem
 import javafx.scene.layout.Priority
 import tornadofx.*
 
-fun EventTarget.actionFieldsTree(
+fun EventTarget.fieldTree(
   actionFields: ObservableList<Field>
 ) {
   treeview<Field> {
@@ -79,7 +78,3 @@ fun EventTarget.actionFieldsTree(
     })
   }
 }
-
-fun EventTarget.actionFieldsTree() = actionFieldsTree(
-  currentActionFields()
-)

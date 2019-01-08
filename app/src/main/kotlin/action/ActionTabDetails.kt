@@ -11,7 +11,7 @@ fun EventTarget.actionTabDetails() {
     hgrow = Priority.ALWAYS
     tab("action") {
       isClosable = false
-      actionFieldsTree()
+      actionFieldTree()
     }
     tab("previous state") {
       isClosable = false

@@ -1,12 +1,12 @@
 package com.github.rougsig.devtools.domain
 
-import com.github.rougsig.devtools.network.ScopeLog
+import com.github.rougsig.devtools.network.LogEntry
 import com.github.rougsig.devtools.network.scopeLive
 import io.reactivex.Observable
 
 fun scopeLive(): Observable<Scope> {
   return Observable.merge(
-    Observable.just(ScopeLog.INIT),
+    Observable.just(LogEntry.Scope.INIT),
     scopeLive()
   )
     .map { log ->

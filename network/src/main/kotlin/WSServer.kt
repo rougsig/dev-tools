@@ -1,33 +1,31 @@
 package com.github.rougsig.devtools.network
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.jakewharton.rxrelay2.PublishRelay
 import io.javalin.Javalin
 import io.reactivex.Observable
 
-private val gson = Gson()
+private val gson = GsonBuilder()
+  .registerTypeAdapter(LogEntry::class.java, LogEntryAdapter())
+  .create()
 
 @Suppress("Unused")
 private val ws = Javalin.create()
   .ws("/") { ws ->
     ws.onMessage { _, msg ->
-      val type = gson.fromJson(msg, TypeLog::class.java).type
-      when (type) {
-        "Action" -> actionStream.accept(gson.fromJson(msg, ActionLog::class.java))
-        "Scope" -> scopeStream.accept(gson.fromJson(msg, ScopeLog::class.java))
+      when (val log = gson.fromJson(msg, LogEntry::class.java)) {
+        is LogEntry.Action -> actionStream.accept(log)
+        is LogEntry.Scope -> scopeStream.accept(log)
       }
-      println(type)
     }
   }
   .start(10002)
 
-private val actionStream = PublishRelay.create<ActionLog>()
-fun actionLive(): Observable<ActionLog> = actionStream
+private val actionStream = PublishRelay.create<LogEntry.Action>()
+fun actionLive(): Observable<LogEntry.Action> = actionStream
 
-private val scopeStream = PublishRelay.create<ScopeLog>()
-fun scopeLive(): Observable<ScopeLog> = scopeStream
-
-val mockActions = emptyList<ActionLog>()
+private val scopeStream = PublishRelay.create<LogEntry.Scope>()
+fun scopeLive(): Observable<LogEntry.Scope> = scopeStream
 
 fun stopWs() {
   ws.stop()
