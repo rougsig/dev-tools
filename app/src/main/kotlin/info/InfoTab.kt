@@ -7,7 +7,6 @@ import tornadofx.vbox
 import java.net.InetAddress
 import java.net.NetworkInterface
 
-
 fun TabPane.infoTab() {
   tab("info") {
     isClosable = false
