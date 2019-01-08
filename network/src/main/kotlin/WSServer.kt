@@ -13,8 +13,8 @@ private val ws = Javalin.create()
     ws.onMessage { _, msg ->
       val type = gson.fromJson(msg, TypeLog::class.java).type
       when (type) {
-        "action" -> actionStream.accept(gson.fromJson(msg, ActionLog::class.java))
-        "scope" -> scopeStream.accept(gson.fromJson(msg, ScopeLog::class.java))
+        "Action" -> actionStream.accept(gson.fromJson(msg, ActionLog::class.java))
+        "Scope" -> scopeStream.accept(gson.fromJson(msg, ScopeLog::class.java))
       }
       println(type)
     }
