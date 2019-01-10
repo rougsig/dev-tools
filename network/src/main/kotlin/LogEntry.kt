@@ -25,10 +25,12 @@ sealed class LogEntry(internal val type: Type) {
   }
 
   data class Scope(
+    val name: String,
     val scope: JsonObject
   ) : LogEntry(Type.Scope) {
     companion object {
       val INIT = Scope(
+        name = "Init",
         scope = JsonObject()
       )
     }

@@ -4,6 +4,7 @@ import com.github.rougsig.devtools.core.pairwise
 import com.github.rougsig.devtools.network.LogEntry
 import com.github.rougsig.devtools.network.scopeLive
 import io.reactivex.Observable
+import java.util.*
 
 fun scopeLive(): Observable<Scope> {
   return Observable
@@ -16,6 +17,7 @@ fun scopeLive(): Observable<Scope> {
       val previousScope = getFields(previousLog.scope)
       val nextScope = getFields(nextLog.scope)
       Scope(
+        name = UUID.randomUUID().toString(),
         list = getProviders(nextScope),
         previousScope = previousScope,
         nextScope = nextScope,
