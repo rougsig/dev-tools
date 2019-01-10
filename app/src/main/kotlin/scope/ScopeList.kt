@@ -19,6 +19,14 @@ fun EventTarget.scopeList(
     cellFormat { scope ->
       graphic = label(scope.name) {
         addClass(AppStyle.actionListLabel)
+
+        // TODO move this login to DevTools.Entry
+        if (scope.name.contains("Open", true)) {
+          addClass(AppStyle.diffTreeAdded)
+        }
+        if (scope.name.contains("Close", true)) {
+          addClass(AppStyle.diffTreeRemoved)
+        }
       }
     }
     onUserSelect(1, onActionClick)
