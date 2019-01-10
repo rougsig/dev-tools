@@ -10,6 +10,7 @@ compileKotlin {
 }
 
 dependencies {
+  implementation project(":core")
   implementation project(":network")
   implementation rootProject.ext.kotlin
   implementation rootProject.ext.rxJava

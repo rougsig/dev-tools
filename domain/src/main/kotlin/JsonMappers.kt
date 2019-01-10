@@ -130,3 +130,53 @@ internal fun getDiff(from: JsonObject, to: JsonObject): List<Field> {
 
   return fields
 }
+
+fun getProviders(fields: List<Field>): List<Field> {
+  val result = mutableListOf<String>()
+  fields.forEach { getProviders(it, result) }
+  return result
+    .mapIndexed { i, it ->
+      Field.StringField(
+        name = "$i",
+        value = it
+      )
+    }
+}
+
+fun getProviders(field: Field, result: MutableList<String>) {
+  if (field.name == "providers") {
+    val arr = field as Field.ArrayField
+    arr
+      .value
+      .mapNotNull { it as? Field.StringField }
+      .forEach { result.add(it.value) }
+  }
+
+  if (field is Field.ObjectField) {
+    field.value.forEach { getProviders(it, result) }
+  }
+}
+
+fun getProvidersDiff(from: List<Field>, to: List<Field>): List<Field> {
+  val fromProviders = mutableListOf<String>()
+  val toProviders = mutableListOf<String>()
+
+  from.forEach { getProviders(it, fromProviders) }
+  to.forEach { getProviders(it, toProviders) }
+
+  val added = toProviders.minus(fromProviders)
+  val removed = fromProviders.minus(toProviders)
+
+  return mutableListOf<String>()
+    .apply {
+      addAll(added)
+      addAll(removed)
+    }
+    .mapIndexed { i, it ->
+      Field.DiffField(
+        "$i",
+        if (added.contains(it)) null else it,
+        if (added.contains(it)) it else null
+      )
+    }
+}

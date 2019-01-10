@@ -6,6 +6,6 @@ import tornadofx.tab
 fun TabPane.scopeTab() {
   tab("scope") {
     isClosable = false
-    scopeFieldTree()
+    scopeTabDetails()
   }
 }
