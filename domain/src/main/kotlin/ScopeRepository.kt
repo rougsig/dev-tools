@@ -17,7 +17,7 @@ fun scopeLive(): Observable<Scope> {
       val previousScope = getFields(previousLog.scope)
       val nextScope = getFields(nextLog.scope)
       Scope(
-        name = UUID.randomUUID().toString(),
+        name = nextLog.name,
         list = getProviders(nextScope),
         previousScope = previousScope,
         nextScope = nextScope,
