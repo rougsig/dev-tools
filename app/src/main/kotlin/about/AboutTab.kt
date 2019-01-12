@@ -10,7 +10,7 @@ fun TabPane.aboutTab() {
   tab("about") {
     isClosable = false
     vbox {
-      label("v0.0.3")
+      label("v0.0.4")
       alignment = Pos.CENTER
     }
   }
