@@ -12,7 +12,8 @@ class LogEntryAdapter : JsonDeserializer<LogEntry> {
 
     return when (type) {
       LogEntry.Type.Action -> context.deserialize(json, LogEntry.Action::class.java)
-      LogEntry.Type.Scope -> context.deserialize(json, LogEntry.Scope::class.java)
+      LogEntry.Type.ScopeOpen -> context.deserialize(json, LogEntry.ScopeOpen::class.java)
+      LogEntry.Type.ScopeClose -> context.deserialize(json, LogEntry.ScopeClose::class.java)
     }
   }
 }

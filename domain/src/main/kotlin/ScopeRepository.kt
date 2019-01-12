@@ -22,7 +22,8 @@ fun scopeLive(): Observable<Scope> {
         previousScope = previousScope,
         nextScope = nextScope,
         diff = getDiff(previousLog.scope, nextLog.scope),
-        diffList = getProvidersDiff(previousScope, nextScope)
+        diffList = getProvidersDiff(previousScope, nextScope),
+        isOpen = nextLog.isOpen
       )
     }
 }

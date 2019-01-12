@@ -20,11 +20,9 @@ fun EventTarget.scopeList(
       graphic = label(scope.name) {
         addClass(AppStyle.actionListLabel)
 
-        // TODO move this login to DevTools.Entry
-        if (scope.name.contains("Open", true)) {
+        if (scope.isOpen) {
           addClass(AppStyle.diffTreeAdded)
-        }
-        if (scope.name.contains("Close", true)) {
+        } else {
           addClass(AppStyle.diffTreeRemoved)
         }
       }

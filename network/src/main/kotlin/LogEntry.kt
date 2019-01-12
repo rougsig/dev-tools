@@ -5,7 +5,8 @@ import com.google.gson.JsonObject
 sealed class LogEntry(internal val type: Type) {
   internal enum class Type {
     Action,
-    Scope
+    ScopeOpen,
+    ScopeClose
   }
 
   data class Action(
@@ -24,15 +25,27 @@ sealed class LogEntry(internal val type: Type) {
     }
   }
 
-  data class Scope(
-    val name: String,
+  interface Scope {
+    val name: String
     val scope: JsonObject
-  ) : LogEntry(Type.Scope) {
+    val isOpen
+      get() = this is ScopeOpen
+
     companion object {
-      val INIT = Scope(
-        name = "Init",
+      val INIT = ScopeOpen(
+        name = "INIT",
         scope = JsonObject()
       )
     }
   }
+
+  data class ScopeOpen(
+    override val name: String,
+    override val scope: JsonObject
+  ) : LogEntry(Type.ScopeOpen), Scope
+
+  data class ScopeClose(
+    override val name: String,
+    override val scope: JsonObject
+  ) : LogEntry(Type.ScopeClose), Scope
 }

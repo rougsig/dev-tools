@@ -6,7 +6,8 @@ data class Scope(
   val nextScope: List<Field>,
   val previousScope: List<Field>,
   val diff: List<Field>,
-  val diffList: List<Field>
+  val diffList: List<Field>,
+  val isOpen: Boolean
 ) {
   companion object {
     val EMPTY = Scope(
@@ -15,7 +16,8 @@ data class Scope(
       nextScope = emptyList(),
       previousScope = emptyList(),
       diff = emptyList(),
-      diffList = emptyList()
+      diffList = emptyList(),
+      isOpen = true
     )
   }
 }
