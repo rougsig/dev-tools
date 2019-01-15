@@ -4,7 +4,6 @@ import com.github.rougsig.devtools.core.pairwise
 import com.github.rougsig.devtools.network.LogEntry
 import com.github.rougsig.devtools.network.scopeLive
 import io.reactivex.Observable
-import java.util.*
 
 fun scopeLive(): Observable<Scope> {
   return Observable
@@ -14,14 +13,14 @@ fun scopeLive(): Observable<Scope> {
     )
     .pairwise()
     .map { (previousLog, nextLog) ->
-      val previousScope = getFields(previousLog.scope)
-      val nextScope = getFields(nextLog.scope)
+      val previousScope = getFields(previousLog.rootScope)
+      val nextScope = getFields(nextLog.rootScope)
       Scope(
         name = nextLog.name,
         list = getProviders(nextScope),
         previousScope = previousScope,
         nextScope = nextScope,
-        diff = getDiff(previousLog.scope, nextLog.scope),
+        diff = getDiff(previousLog.rootScope, nextLog.rootScope),
         diffList = getProvidersDiff(previousScope, nextScope),
         isOpen = nextLog.isOpen
       )

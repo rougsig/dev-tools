@@ -27,25 +27,25 @@ sealed class LogEntry(internal val type: Type) {
 
   interface Scope {
     val name: String
-    val scope: JsonObject
+    val rootScope: JsonObject
     val isOpen
       get() = this is ScopeOpen
 
     companion object {
       val INIT = ScopeOpen(
         name = "INIT",
-        scope = JsonObject()
+        rootScope = JsonObject()
       )
     }
   }
 
   data class ScopeOpen(
     override val name: String,
-    override val scope: JsonObject
+    override val rootScope: JsonObject
   ) : LogEntry(Type.ScopeOpen), Scope
 
   data class ScopeClose(
     override val name: String,
-    override val scope: JsonObject
+    override val rootScope: JsonObject
   ) : LogEntry(Type.ScopeClose), Scope
 }
