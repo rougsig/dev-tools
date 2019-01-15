@@ -15,7 +15,8 @@ private val ws = Javalin.create()
     ws.onMessage { _, msg ->
       when (val log = gson.fromJson(msg, LogEntry::class.java)) {
         is LogEntry.Action -> actionStream.accept(log)
-        is LogEntry.Scope -> scopeStream.accept(log)
+        is LogEntry.ScopeOpen -> scopeStream.accept(log)
+        is LogEntry.ScopeClose -> scopeStream.accept(log)
       }
     }
   }
