@@ -6,7 +6,15 @@ repositories {
 }
 
 compileKotlin {
-  kotlinOptions.jvmTarget= 1.8
+  kotlinOptions.jvmTarget = 1.8
+}
+
+sourceSets {
+  test {
+    resources {
+      srcDir 'src/kotlin/test'
+    }
+  }
 }
 
 dependencies {
@@ -15,4 +23,5 @@ dependencies {
   implementation rootProject.ext.kotlin
   implementation rootProject.ext.rxJava
   implementation rootProject.ext.gson
+  testImplementation rootProject.ext.junit
 }

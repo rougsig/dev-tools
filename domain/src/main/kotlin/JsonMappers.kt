@@ -1,182 +1,172 @@
 package com.github.rougsig.devtools.domain
 
-import com.google.gson.*
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 
-internal fun getFields(obj: JsonObject): List<Field> {
-  val fields = mutableListOf<Field>()
+const val DEFAULT_FIELD_NAME = "Root"
 
-  fun getField(el: JsonElement, key: String): Field? {
-    return when {
-      el.isJsonPrimitive ->
-        Field.StringField(key, el.asString)
+internal fun JsonElement.toField(name: String = DEFAULT_FIELD_NAME): Field.NamedField {
 
-      el.isJsonNull ->
-        Field.StringField(key, "null")
-
-      el.isJsonArray ->
-        Field.ArrayField(
-          key,
-          el.asJsonArray
-            .mapIndexedNotNull { i, it -> getField(it, "$i") }
-        )
-
-      el.isJsonObject ->
-        Field.ObjectField(key, getFields(el.asJsonObject))
-
-      else -> null
-    }
+  fun JsonObject.toFields(): List<Field.NamedField> {
+    return keySet().map { get(it).toField(it) }
   }
 
-  obj.keySet()
-    .mapNotNull { key ->
-      getField(obj.get(key), key)
-    }
-    .sortedByDescending { it is Field.StringField }
-    .forEach { fields.add(it) }
-
-  return fields
-}
-
-internal fun JsonElement.jsonNullToJsonType(mapTo: JsonElement): JsonElement {
-  return if (this == JsonNull.INSTANCE) {
-    when {
-      mapTo.isJsonObject -> JsonObject()
-      mapTo.isJsonPrimitive -> JsonPrimitive("null")
-      mapTo.isJsonArray -> JsonArray()
-      else -> JsonPrimitive("null")
-    }
-  } else {
-    this
-  }
-}
-
-internal fun getFieldDiff(elFrom: JsonElement, elTo: JsonElement, key: String): Field? {
-  fun getField(el: JsonElement, key: String, isAdded: Boolean): Field? {
-    return when {
-      el.isJsonPrimitive ->
-        Field.DiffField(
-          key,
-          if (isAdded) null else el.asString,
-          if (isAdded) el.asString else null
-        )
-
-      el.isJsonNull ->
-        Field.StringField(key, "null")
-
-      el.isJsonArray ->
-        Field.ArrayField(
-          key,
-          el.asJsonArray
-            .mapIndexedNotNull { i, it -> getField(it, "$i", isAdded) }
-        )
-
-      el.isJsonObject ->
-        Field.ObjectField(key, getFields(el.asJsonObject))
-
-      else -> null
-    }
+  fun JsonArray.toFields(): List<Field.NamedField> {
+    return mapIndexed { i, it -> it.toField("$i") }
   }
 
   return when {
-    elFrom.isJsonPrimitive && elTo.isJsonPrimitive ->
-      Field.DiffField(key, elFrom.asString, elTo.asString)
-
-    elFrom.isJsonArray && elTo.isJsonArray -> {
-      val added = elTo.asJsonArray.minus(elFrom.asJsonArray)
-      val removed = elFrom.asJsonArray.minus(elTo.asJsonArray)
-      val list = mutableListOf<JsonElement>()
-        .apply {
-          addAll(added)
-          addAll(removed)
-        }
-        .mapIndexedNotNull { i, it ->
-          getField(it, "$i", added.contains(it))
-        }
-      Field.ArrayField(key, list)
+    isJsonObject -> {
+      Field.ObjectField(
+        name = name,
+        value = asJsonObject.toFields()
+      )
     }
-
-    elFrom.isJsonObject && elTo.isJsonObject ->
-      Field.ObjectField(key, getDiff(elFrom.asJsonObject, elTo.asJsonObject))
-
-    else -> null
+    isJsonArray -> {
+      Field.ArrayField(
+        name = name,
+        value = asJsonArray.toFields()
+      )
+    }
+    isJsonPrimitive -> {
+      Field.ValueField(
+        name = name,
+        value = this.asString
+      )
+    }
+    isJsonNull -> {
+      Field.NullField(
+        name = name
+      )
+    }
+    else -> throw IllegalStateException("unknown type: $this")
   }
 }
 
-internal fun getDiff(from: JsonObject, to: JsonObject): List<Field> {
-  val fields = mutableListOf<Field>()
-
-  val keys = mutableSetOf<String>().apply {
-    addAll(from.keySet())
-    addAll(to.keySet())
+internal fun createDiff(previous: Field.NamedField, next: Field.NamedField): Field.NamedField? {
+  if (previous.name != next.name) {
+    throw IllegalStateException("previous.name != next.name. ${previous.name} != ${next.name}")
   }
 
-  keys
-    .mapNotNull { key ->
-      val elFrom = from.get(key) ?: JsonNull.INSTANCE
-      val elTo = to.get(key) ?: JsonNull.INSTANCE
+  if (!previous.isEqualTypeTo(next) && !previous.isNullType() && !next.isNullType()) {
+    val previousClassName = previous.javaClass.simpleName
+    val nextClassName = next.javaClass.simpleName
+    throw IllegalStateException("unable to create stateDiff: $previousClassName -> $nextClassName")
+  }
 
-      if (elFrom != elTo) {
-        getFieldDiff(
-          elFrom.jsonNullToJsonType(elTo),
-          elTo.jsonNullToJsonType(elFrom),
-          key
-        )
-      } else {
-        null
+  if (previous == next) {
+    return null
+  }
+
+  return when (next) {
+    is Field.ObjectField -> {
+      when (previous) {
+        is Field.ObjectField -> {
+          val previousItems = previous.value
+          val nextItems = next.value
+
+          val keys = mutableSetOf<String>()
+
+          previousItems.forEach { keys.add(it.name) }
+          nextItems.forEach { keys.add(it.name) }
+
+          val diffItems = keys.mapNotNull { name ->
+            val previousItem = previousItems.find { it.name == name } ?: Field.NullField(name)
+            val nextItem = nextItems.find { it.name == name } ?: Field.NullField(name)
+
+            createDiff(previousItem, nextItem)
+          }
+
+          next.copy(
+            value = diffItems
+          )
+        }
+        is Field.NullField -> {
+          Field.DiffField(
+            name = next.name,
+            value = next,
+            previousValue = previous
+          )
+        }
+        else -> throw IllegalStateException("unable to create stateDiff: $previous -> $next")
       }
     }
-    .sortedByDescending { it is Field.StringField }
-    .forEach { fields.add(it) }
+    is Field.ArrayField -> {
+      when (previous) {
+        is Field.NullField -> {
+          next.copy(
+            value = next.value.mapIndexed { i, it -> Field.AddedField(name = "$i", value = it) }
+          )
+        }
+        is Field.ArrayField -> {
+          val previousItems = previous.value
+          val nextItems = next.value
 
-  return fields
-}
+          var lastIndex = 0
+          val addedItems = nextItems
+            .minus(previousItems)
+            .mapIndexed { i, it ->
+              lastIndex++
+              Field.AddedField(name = "$i", value = it)
+            }
 
-fun getProviders(fields: List<Field>): List<Field> {
-  val result = mutableListOf<String>()
-  fields.forEach { getProviders(it, result) }
-  return result
-    .mapIndexed { i, it ->
-      Field.StringField(
-        name = "$i",
-        value = it
-      )
+          val removedItems = previousItems
+            .minus(nextItems)
+            .mapIndexed { i, it -> Field.RemovedField(name = "${lastIndex + i}", value = it) }
+
+          val diffItems = addedItems.plus(removedItems)
+
+          next.copy(
+            value = diffItems
+          )
+        }
+        else -> throw IllegalStateException("unable to create stateDiff: $previous -> $next")
+      }
     }
-}
-
-fun getProviders(field: Field, result: MutableList<String>) {
-  if (field.name == "providers") {
-    val arr = field as Field.ArrayField
-    arr
-      .value
-      .mapNotNull { it as? Field.StringField }
-      .forEach { result.add(it.value) }
+    is Field.ValueField -> {
+      when (previous) {
+        is Field.ValueField -> {
+          Field.DiffField(
+            name = next.name,
+            value = next,
+            previousValue = previous
+          )
+        }
+        is Field.NullField -> {
+          Field.DiffField(
+            name = next.name,
+            value = next,
+            previousValue = previous
+          )
+        }
+        else -> throw IllegalStateException("unable to create stateDiff: $previous -> $next")
+      }
+    }
+    is Field.NullField -> {
+      when (previous) {
+        is Field.ArrayField -> {
+          previous.copy(
+            value = previous.value.mapIndexed { i, it -> Field.RemovedField(name = "$i", value = it) }
+          )
+        }
+        is Field.ObjectField -> {
+          Field.DiffField(
+            name = next.name,
+            value = next,
+            previousValue = previous
+          )
+        }
+        is Field.ValueField -> {
+          Field.DiffField(
+            name = next.name,
+            value = next,
+            previousValue = previous
+          )
+        }
+        else -> throw IllegalStateException("unable to create stateDiff: $previous -> $next")
+      }
+    }
+    else -> throw IllegalStateException("unable to create stateDiff: $previous -> $next")
   }
-
-  if (field is Field.ObjectField) {
-    field.value.forEach { getProviders(it, result) }
-  }
-}
-
-fun getProvidersDiff(from: List<Field>, to: List<Field>): List<Field> {
-  val fromProviders = mutableListOf<String>()
-  val toProviders = mutableListOf<String>()
-
-  from.forEach { getProviders(it, fromProviders) }
-  to.forEach { getProviders(it, toProviders) }
-
-  val added = toProviders.minus(fromProviders)
-  val removed = fromProviders.minus(toProviders)
-
-  return mutableListOf<String>()
-    .apply {
-      addAll(added)
-      addAll(removed)
-    }
-    .mapIndexed { i, it ->
-      Field.DiffField(
-        "$i",
-        if (added.contains(it)) null else it,
-        if (added.contains(it)) it else null
-      )
-    }
 }

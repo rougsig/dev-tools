@@ -2,21 +2,17 @@ package com.github.rougsig.devtools.domain
 
 data class Scope(
   val name: String,
-  val list: List<Field>,
-  val nextScope: List<Field>,
-  val previousScope: List<Field>,
-  val diff: List<Field>,
-  val diffList: List<Field>,
+  val nextScope: Field,
+  val previousScope: Field,
+  val scopeDiff: Field?,
   val isOpen: Boolean
 ) {
   companion object {
     val EMPTY = Scope(
-      name = "",
-      list = emptyList(),
-      nextScope = emptyList(),
-      previousScope = emptyList(),
-      diff = emptyList(),
-      diffList = emptyList(),
+      name = "Scope",
+      nextScope = Field.NullField("Scope"),
+      previousScope = Field.NullField("Scope"),
+      scopeDiff = Field.NullField("Scope"),
       isOpen = true
     )
   }

@@ -21,4 +21,9 @@ ext {
       "org.slf4j:slf4j-simple:1.7.25",
       gson
   ]
+
+  junit = [
+      "junit:junit:4.12",
+      "org.assertj:assertj-core:3.6.2"
+  ]
 }

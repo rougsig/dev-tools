@@ -13,15 +13,15 @@ fun scopeLive(): Observable<Scope> {
     )
     .pairwise()
     .map { (previousLog, nextLog) ->
-      val previousScope = getFields(previousLog.getScopeJson())
-      val nextScope = getFields(nextLog.getScopeJson())
+      val previousScope = previousLog.scopeJsonObject.toField("Scope")
+      val nextScope = nextLog.scopeJsonObject.toField("Scope")
+      val scopeDiff = createDiff(previousScope, nextScope)
+
       Scope(
         name = nextLog.name,
-        list = getProviders(nextScope),
         previousScope = previousScope,
         nextScope = nextScope,
-        diff = getDiff(previousLog.getScopeJson(), nextLog.getScopeJson()),
-        diffList = getProvidersDiff(previousScope, nextScope),
+        scopeDiff = scopeDiff,
         isOpen = nextLog.isOpen
       )
     }

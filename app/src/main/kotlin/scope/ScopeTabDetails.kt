@@ -1,6 +1,7 @@
 package com.github.rougsig.devtools.app.scope
 
 import com.github.rougsig.devtools.app.common.fieldTree
+import com.github.rougsig.devtools.app.common.nullableFieldTree
 import com.github.rougsig.devtools.app.store.*
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
@@ -11,25 +12,17 @@ import tornadofx.tabpane
 fun EventTarget.scopeTabDetails() {
   tabpane {
     hgrow = Priority.ALWAYS
-    tab("provider diff list") {
-      isClosable = false
-      fieldTree(currentScopeDiffList())
-    }
-    tab("provider list") {
-      isClosable = false
-      fieldTree(currentScopeList())
-    }
     tab("previous scope") {
       isClosable = false
-      fieldTree(currentScopePreviousFields())
+      fieldTree(currentScopePreviousField())
     }
-    tab("scope diff") {
+    tab("scope stateDiff") {
       isClosable = false
-      fieldTree(currentScopeDiff())
+      nullableFieldTree(currentScopeDiff())
     }
     tab("next scope") {
       isClosable = false
-      fieldTree(currentScopeNextFields())
+      fieldTree(currentScopeNextField())
     }
   }
 }

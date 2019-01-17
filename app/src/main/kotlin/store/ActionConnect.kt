@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.store
 
+import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.app.util.selectList
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.Action
@@ -18,20 +19,20 @@ fun actions(): ObservableList<Action> = filteredActions
 private val currentAction = SimpleObjectProperty(Action.EMPTY)
 fun currentAction(): ObservableValue<Action> = currentAction
 
-private val currentActionFields = currentAction.selectList { it.fields }
-fun currentActionFields(): ObservableList<Field> = currentActionFields
+private val currentActionField = currentAction.select { it.action }
+fun currentActionField(): ObservableValue<Field> = currentActionField
 
 private val actionNames = mutableListOf<String>().observable()
 fun actionNames(): ObservableList<String> = actionNames
 
-private val currentDiffFields = currentAction.selectList { it.diff }
-fun currentDiffFields(): ObservableList<Field> = currentDiffFields
+private val currentDiffField = currentAction.select { it.stateDiff }
+fun currentDiffField(): ObservableValue<Field?> = currentDiffField
 
-private val currentActionPreviousState = currentAction.selectList { it.previousState }
-fun currentActionPreviousState(): ObservableList<Field> = currentActionPreviousState
+private val currentActionPreviousState = currentAction.select { it.previousState }
+fun currentActionPreviousState(): ObservableValue<Field> = currentActionPreviousState
 
-private val currentActionNextState = currentAction.selectList { it.nextState }
-fun currentActionNextState(): ObservableList<Field> = currentActionNextState
+private val currentActionNextState = currentAction.select { it.nextState }
+fun currentActionNextState(): ObservableValue<Field> = currentActionNextState
 
 private val onActionClick = { action: Action -> currentAction.set(action) }
 fun onActionClick(): (Action) -> Unit = onActionClick

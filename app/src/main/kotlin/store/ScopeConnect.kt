@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.store
 
+import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.app.util.selectList
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.Field
@@ -18,20 +19,14 @@ fun scopes(): ObservableList<Scope> = filteredScopes
 private val currentScope = SimpleObjectProperty(Scope.EMPTY)
 fun currentScope(): ObservableValue<Scope> = currentScope
 
-private val currentScopeNextFields = currentScope.selectList { it.nextScope }
-fun currentScopeNextFields(): ObservableList<Field> = currentScopeNextFields
+private val currentScopeNextField = currentScope.select { it.nextScope }
+fun currentScopeNextField(): ObservableValue<Field> = currentScopeNextField
 
-private val currentScopePreviousFields = currentScope.selectList { it.previousScope }
-fun currentScopePreviousFields(): ObservableList<Field> = currentScopePreviousFields
+private val currentScopePreviousField = currentScope.select { it.previousScope }
+fun currentScopePreviousField(): ObservableValue<Field> = currentScopePreviousField
 
-private val currentScopeDiff = currentScope.selectList { it.diff }
-fun currentScopeDiff(): ObservableList<Field> = currentScopeDiff
-
-private val currentScopeList = currentScope.selectList { it.list }
-fun currentScopeList() = currentScopeList
-
-private val currentScopeDiffList = currentScope.selectList { it.diffList }
-fun currentScopeDiffList() = currentScopeDiffList
+private val currentScopeDiff = currentScope.select { it.scopeDiff }
+fun currentScopeDiff(): ObservableValue<Field?> = currentScopeDiff
 
 private val scopeNames = mutableListOf<String>().observable()
 fun scopeNames(): ObservableList<String> = scopeNames

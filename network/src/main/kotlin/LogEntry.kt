@@ -27,7 +27,7 @@ sealed class LogEntry(internal val type: Type) {
 
   interface Scope {
     val name: String
-    fun getScopeJson(): JsonObject
+    val scopeJsonObject: JsonObject
     val isOpen
       get() = this is ScopeOpen
 
@@ -43,13 +43,15 @@ sealed class LogEntry(internal val type: Type) {
     override val name: String,
     val scope: JsonObject
   ) : LogEntry(Type.ScopeOpen), Scope {
-    override fun getScopeJson() = scope
+    override val scopeJsonObject: JsonObject
+      get() = scope
   }
 
   data class ScopeClose(
     override val name: String,
     val rootScope: JsonObject
   ) : LogEntry(Type.ScopeClose), Scope {
-    override fun getScopeJson() = rootScope
+    override val scopeJsonObject: JsonObject
+      get() = rootScope
   }
 }

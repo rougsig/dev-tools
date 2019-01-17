@@ -10,13 +10,17 @@ fun actionLive(): Observable<Action> {
     actionLive()
   )
     .map { log ->
+      val field = log.action.toField(log.name)
+      val previousState = log.previousState.toField("State")
+      val nextState = log.nextState.toField("State")
+      val stateDiff = createDiff(previousState, nextState)
+
       Action(
         name = getName(log.name),
-        fields = getFields(log.action),
-        previousState = getFields(log.previousState),
-        nextState = getFields(log.nextState),
-        diff = getDiff(log.previousState, log.nextState),
-        time = System.currentTimeMillis().toString()
+        action = field,
+        previousState = previousState,
+        nextState = nextState,
+        stateDiff = stateDiff
       )
     }
 }
