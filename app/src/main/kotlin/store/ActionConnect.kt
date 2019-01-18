@@ -1,7 +1,6 @@
 package com.github.rougsig.devtools.app.store
 
 import com.github.rougsig.devtools.app.util.select
-import com.github.rougsig.devtools.app.util.selectList
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.Action
 import com.github.rougsig.devtools.domain.Field

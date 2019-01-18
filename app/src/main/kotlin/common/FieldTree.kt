@@ -4,30 +4,15 @@ import com.github.rougsig.devtools.domain.Field
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.control.Label
-import tornadofx.*
+import tornadofx.scrollpane
 
-fun EventTarget.nullableFieldTree(
-  field: ObservableValue<Field?>
+fun <T: Field?> EventTarget.fieldTree(
+  field: ObservableValue<T>,
+  isScope: Boolean =  false
 ) {
-  val content = scrollpane {
-    paddingTop = 24
-    paddingBottom = 24
-  }
+  val content = scrollpane()
 
   field.addListener { _, _, newValue ->
-    content.content = newValue?.toNode() ?: Label("No Fields")
-  }
-}
-
-fun EventTarget.fieldTree(
-  field: ObservableValue<Field>
-) {
-  val content = scrollpane {
-    paddingTop = 24
-    paddingBottom = 24
-  }
-
-  field.addListener { _, _, newValue ->
-    content.content = newValue?.toNode() ?: Label("No Fields")
+    content.content = newValue?.toNode(isScope = isScope) ?: Label("No Fields")
   }
 }

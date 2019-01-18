@@ -2,15 +2,14 @@ package com.github.rougsig.devtools.app.common
 
 import com.github.rougsig.devtools.app.AppStyle
 import com.github.rougsig.devtools.domain.Field
-import javafx.event.EventTarget
 import javafx.scene.Node
-import javafx.scene.Parent
 import javafx.scene.control.Label
-import javafx.scene.control.TreeItem
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import tornadofx.*
-import java.lang.IllegalStateException
+import tornadofx.add
+import tornadofx.addClass
+import tornadofx.label
+import tornadofx.paddingLeft
 
 private const val SPACE = 24
 
@@ -21,7 +20,9 @@ private fun collapsibleVBox(
   isCollapsed: Boolean = false
 ): VBox {
   return VBox().apply {
-    paddingLeft = SPACE
+    if (!isCollapsed) {
+      paddingLeft = SPACE
+    }
 
     add(collapsedNode)
     add(expandedNode)
@@ -49,35 +50,82 @@ private fun collapsibleVBox(
   }
 }
 
-fun Field.toNode(skipName: Boolean = false): Node {
+
+fun Field.toNode(
+  skipName: Boolean = false,
+  isCollapsed: Boolean = false,
+  isScope: Boolean = false
+): Node {
+  fun isScopeName(name: String) = name !in setOf("Scope", "providers", "children") && isScope
+
+  fun Label.addClassIfScopeName(name: String) = apply {
+    if (isScopeName(name)) {
+      addClass(AppStyle.diffTreeScopeNameStyle)
+    }
+  }
+
   return when (this) {
     is Field.ObjectField -> {
       collapsibleVBox(
-        collapsedNode = Label("${if (!skipName) "$name: " else ""}{...}"),
-        expandedNode = Label("${if (!skipName) "$name: " else ""}{"),
+        collapsedNode = HBox().apply {
+          if (!skipName) {
+            add(Label(name).addClassIfScopeName(name))
+            add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
+          }
+          add(Label("{...}").addClass(AppStyle.diffTreeObjectStyle))
+        },
+        expandedNode = HBox().apply {
+          if (!skipName) {
+            add(Label(name).addClassIfScopeName(name))
+            add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
+          }
+          add(Label("{").addClass(AppStyle.diffTreeBracketsStyle))
+        },
         content = VBox().apply {
-          value.forEach { add(it.toNode()) }
-          add(label("}"))
-        }
+          value.forEach { add(it.toNode(isScope = isScope)) }
+          add(label("}").addClass(AppStyle.diffTreeBracketsStyle))
+        },
+        isCollapsed = isCollapsed
       )
     }
     is Field.ArrayField -> {
       collapsibleVBox(
-        collapsedNode = Label("${if (!skipName) "$name: " else ""}Array[${value.size}]"),
-        expandedNode = Label("${if (!skipName) "$name: " else ""}["),
+        collapsedNode = HBox().apply {
+          if (!skipName) {
+            add(Label(name).addClassIfScopeName(name))
+            add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
+          }
+          add(Label("Array[${value.size}]").addClass(AppStyle.diffTreeArrayStyle))
+        },
+        expandedNode = HBox().apply {
+          if (!skipName) {
+            add(Label(name).addClassIfScopeName(name))
+            add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
+          }
+          add(Label("[").addClass(AppStyle.diffTreeBracketsStyle))
+        },
         content = VBox().apply {
-          value.forEach { add(it.toNode()) }
-          add(label("]"))
-        }
+          value.forEach { add(it.toNode(isScope = isScope)) }
+          add(label("]").addClass(AppStyle.diffTreeBracketsStyle))
+        },
+        isCollapsed = isCollapsed
       )
     }
     is Field.ValueField -> {
       HBox().apply {
         paddingLeft = SPACE
         if (!skipName) {
-          add(Label("$name: $value"))
+          if (name.toIntOrNull() != null) {
+            add(Label(name).addClass(AppStyle.diffTreeBracketsStyle))
+          } else {
+            add(Label(name).addClassIfScopeName(name))
+          }
+          add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
+        }
+        if (value == "true" || value == "false") {
+          add(Label(value).addClass(AppStyle.diffTreeBooleanStyle))
         } else {
-          add(Label(value))
+          add(Label("\"$value\"").addClass(AppStyle.diffTreeStringStyle))
         }
       }
     }
@@ -85,26 +133,31 @@ fun Field.toNode(skipName: Boolean = false): Node {
       HBox().apply {
         paddingLeft = SPACE
         if (!skipName) {
-          add(Label("$name: null"))
-        } else {
-          add(Label("null"))
+          add(Label(name).addClassIfScopeName(name))
+          add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
         }
+        add(Label("null").addClass(AppStyle.diffTreeNullStyle))
       }
     }
     is Field.DiffField -> {
       HBox().apply {
         paddingLeft = SPACE
-        add(Label("$name: "))
-        add(previousValue.toNode(skipName = true).addClass(AppStyle.diffTreeRemoved))
-        add(Label(" -> "))
-        add(value.toNode(skipName = true).addClass(AppStyle.diffTreeAdded))
+        add(Label(name).addClassIfScopeName(name))
+        add(Label(": ").addClass(AppStyle.diffTreeBracketsStyle))
+        if (value != null) {
+          add(previousValue.toNode(skipName = true, isScope = isScope).addClass(AppStyle.diffTreeRemoved))
+          add(Label(" -> ").addClass(AppStyle.diffTreeBracketsStyle))
+          add(value!!.toNode(skipName = true, isScope = isScope).addClass(AppStyle.diffTreeAdded))
+        } else {
+          add(previousValue.toNode(skipName = true, isCollapsed = true, isScope = isScope))
+        }
       }
     }
     is Field.AddedField -> {
-      value.toNode()
+      value.toNode(isScope = isScope)
     }
     is Field.RemovedField -> {
-      value.toNode()
+      value.toNode(isScope = isScope)
     }
     is Field.NamedField -> throw IllegalStateException("unable to create Node from: NamedField")
   }.apply {

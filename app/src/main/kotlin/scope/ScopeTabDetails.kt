@@ -1,8 +1,9 @@
 package com.github.rougsig.devtools.app.scope
 
 import com.github.rougsig.devtools.app.common.fieldTree
-import com.github.rougsig.devtools.app.common.nullableFieldTree
-import com.github.rougsig.devtools.app.store.*
+import com.github.rougsig.devtools.app.store.currentScopeDiff
+import com.github.rougsig.devtools.app.store.currentScopeNextField
+import com.github.rougsig.devtools.app.store.currentScopePreviousField
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
 import tornadofx.hgrow
@@ -14,15 +15,15 @@ fun EventTarget.scopeTabDetails() {
     hgrow = Priority.ALWAYS
     tab("previous scope") {
       isClosable = false
-      fieldTree(currentScopePreviousField())
+      fieldTree(currentScopePreviousField(), isScope = true)
     }
     tab("scope stateDiff") {
       isClosable = false
-      nullableFieldTree(currentScopeDiff())
+      fieldTree(currentScopeDiff(), isScope = true)
     }
     tab("next scope") {
       isClosable = false
-      fieldTree(currentScopeNextField())
+      fieldTree(currentScopeNextField(), isScope = true)
     }
   }
 }

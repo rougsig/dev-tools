@@ -27,7 +27,7 @@ sealed class Field {
 
   data class DiffField(
     override val name: String,
-    val value: Field,
+    val value: Field?,
     val previousValue: Field
   ) : NamedField()
 
