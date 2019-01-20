@@ -22,14 +22,14 @@ fun Field.toNode(
     isCollapsed: Boolean
   ): Region {
     return collapsibleVBox(
-      collapsedNode = HBox().apply {
+      collapsedLabel = HBox().apply {
         if (!skipName) {
           nameLabel(name, isScope)
           bracketLabel(": ")
         }
         objectLabel("{...}")
       },
-      expandedNode = HBox().apply {
+      expandedLabel = HBox().apply {
         if (!skipName) {
           nameLabel(name, isScope)
           bracketLabel(": ")
@@ -49,14 +49,14 @@ fun Field.toNode(
     isCollapsed: Boolean
   ): Region {
     return collapsibleVBox(
-      collapsedNode = HBox().apply {
+      collapsedLabel = HBox().apply {
         if (!skipName) {
           nameLabel(name, isScope)
           bracketLabel(": ")
         }
         arrayLabel(value.size.toString())
       },
-      expandedNode = HBox().apply {
+      expandedLabel = HBox().apply {
         if (!skipName) {
           nameLabel(name, isScope)
           bracketLabel(": ")

@@ -1,18 +1,28 @@
 package com.github.rougsig.devtools.app.common
 
+import com.github.rougsig.devtools.app.AppStyle
 import javafx.scene.Node
 import javafx.scene.layout.VBox
 import tornadofx.add
+import tornadofx.addClass
+import tornadofx.hbox
+import tornadofx.label
 
 fun collapsibleVBox(
-  collapsedNode: Node,
-  expandedNode: Node,
+  collapsedLabel: Node,
+  expandedLabel: Node,
   content: Node,
   isCollapsed: Boolean = false
 ): VBox {
   return VBox().apply {
-    add(collapsedNode)
-    add(expandedNode)
+    val collapsedNode = hbox {
+      label(">> ").addClass(AppStyle.diffTreeBracketsStyle)
+      add(collapsedLabel)
+    }
+    val expandedNode = hbox {
+      label("^^ ").addClass(AppStyle.diffTreeBracketsStyle)
+      add(expandedLabel)
+    }
     add(content)
 
     collapsedNode.managedProperty().bind(collapsedNode.visibleProperty())

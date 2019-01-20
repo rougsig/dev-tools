@@ -24,7 +24,6 @@ internal class AppStyle : Stylesheet() {
       fontSize = 12.px
     }
     diffTreeMainStyle {
-      textFill = c("#2c3e50")
       fontSize = 12.px
       label {
         padding = box(0.5.px, 0.px)
@@ -34,6 +33,7 @@ internal class AppStyle : Stylesheet() {
       textFill = c("#95a5a6")
     }
     diffTreeScopeNameStyle {
+      textFill = c("#16a085")
       fontWeight = FontWeight.BOLD
     }
     diffTreeObjectStyle {
@@ -51,7 +51,7 @@ internal class AppStyle : Stylesheet() {
       fontWeight = FontWeight.BOLD
     }
     diffTreeStringStyle {
-      textFill = c("#002b36")
+      textFill = c("#34495e")
       fontWeight = FontWeight.BOLD
     }
     diffTreeRemoved {

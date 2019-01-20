@@ -24,7 +24,7 @@ fun EventTarget.objectLabel(text: String) {
 fun EventTarget.valueLabel(value: String) {
   fun getClassByValue(): CssRule {
     return when {
-      value == "true" && value == "false" -> AppStyle.diffTreeBooleanStyle
+      value == "true" || value == "false" -> AppStyle.diffTreeBooleanStyle
       value == "null" -> AppStyle.diffTreeNullStyle
       else -> AppStyle.diffTreeStringStyle
     }
