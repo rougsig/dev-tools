@@ -51,11 +51,11 @@ internal class AppStyle : Stylesheet() {
       fontWeight = FontWeight.BOLD
     }
     diffTreeStringStyle {
-      textFill = c("#27ae60")
+      textFill = c("#002b36")
       fontWeight = FontWeight.BOLD
     }
     diffTreeRemoved {
-      backgroundColor += c("#e74c3c")
+      backgroundColor += c("#dc322f")
       textFill = c("#ecf0f1")
       padding = box(0.px, 4.px)
       label {
@@ -64,7 +64,7 @@ internal class AppStyle : Stylesheet() {
       }
     }
     diffTreeAdded {
-      backgroundColor += c("#2ecc71")
+      backgroundColor += c("#859900")
       textFill = c("#ecf0f1")
       padding = box(0.px, 4.px)
       label {
