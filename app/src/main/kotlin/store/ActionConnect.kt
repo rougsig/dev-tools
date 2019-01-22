@@ -36,6 +36,12 @@ fun currentActionNextState(): ObservableValue<Field> = currentActionNextState
 private val onActionClick = { action: Action -> currentAction.set(action) }
 fun onActionClick(): (Action) -> Unit = onActionClick
 
+fun onClearActionListClick() {
+  actions.setAll(Action.EMPTY)
+  actionNames.clear()
+  currentAction.set(Action.EMPTY)
+}
+
 private val onActionFilterChanged = { name: String ->
   filteredActions.setPredicate {
     if (name.isBlank()) {

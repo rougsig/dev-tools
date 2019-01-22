@@ -14,6 +14,7 @@ fun TabPane.actionTab() {
       vbox {
         actionFilter(widthProperty())
         actionList()
+        cleatActionListButton(widthProperty())
       }
       actionTabDetails()
     }

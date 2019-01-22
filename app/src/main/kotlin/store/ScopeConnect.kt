@@ -33,6 +33,12 @@ fun scopeNames(): ObservableList<String> = scopeNames
 private val onScopeClick = { scope: Scope -> currentScope.set(scope) }
 fun onScopeClick(): (Scope) -> Unit = onScopeClick
 
+fun onClearScopeListClick() {
+  scopes.setAll(Scope.EMPTY)
+  scopeNames.clear()
+  currentScope.set(Scope.EMPTY)
+}
+
 private val onScopeFilterChanged = { name: String ->
   filteredScopes.setPredicate {
     if (name.isBlank()) {

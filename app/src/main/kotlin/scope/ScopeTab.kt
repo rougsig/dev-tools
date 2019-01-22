@@ -14,6 +14,7 @@ fun TabPane.scopeTab() {
       vbox {
         scopeFilter(widthProperty())
         scopeList()
+        cleatScopeListButton(widthProperty())
       }
       scopeTabDetails()
     }
