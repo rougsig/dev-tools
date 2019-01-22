@@ -2,11 +2,16 @@ package com.github.rougsig.devtools.app.common
 
 import com.github.rougsig.devtools.app.AppStyle
 import javafx.scene.Node
+import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import tornadofx.add
 import tornadofx.addClass
 import tornadofx.hbox
 import tornadofx.label
+
+private const val ID_CONTROL = "CONTROL"
+
+private fun Pane.findControl(): Node = children.find { it.id == ID_CONTROL }!!
 
 fun collapsibleVBox(
   collapsedLabel: Node,
@@ -16,11 +21,17 @@ fun collapsibleVBox(
 ): VBox {
   return VBox().apply {
     val collapsedNode = hbox {
-      label(">> ").addClass(AppStyle.diffTreeBracketsStyle)
+      label(">> ") {
+        id = ID_CONTROL
+        addClass(AppStyle.diffTreeBracketsStyle)
+      }
       add(collapsedLabel)
     }
     val expandedNode = hbox {
-      label("^^ ").addClass(AppStyle.diffTreeBracketsStyle)
+      label("^^ ") {
+        id = ID_CONTROL
+        addClass(AppStyle.diffTreeBracketsStyle)
+      }
       add(expandedLabel)
     }
     add(content)
@@ -29,13 +40,13 @@ fun collapsibleVBox(
     expandedNode.managedProperty().bind(expandedNode.visibleProperty())
     content.managedProperty().bind(content.visibleProperty())
 
-    collapsedNode.setOnMouseClicked {
+    collapsedNode.findControl().setOnMouseClicked {
       content.isVisible = true
       collapsedNode.isVisible = false
       expandedNode.isVisible = true
     }
 
-    expandedNode.setOnMouseClicked {
+    expandedNode.findControl().setOnMouseClicked {
       content.isVisible = false
       collapsedNode.isVisible = true
       expandedNode.isVisible = false

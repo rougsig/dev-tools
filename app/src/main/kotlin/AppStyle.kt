@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app
 
+import javafx.scene.paint.Color
 import javafx.scene.text.FontWeight
 import tornadofx.*
 
@@ -17,6 +18,8 @@ internal class AppStyle : Stylesheet() {
     val diffTreeBooleanStyle by cssclass("diff-tree_boolean")
     val diffTreeStringStyle by cssclass("diff-tree_string")
     val diffTreeNullStyle by cssclass("diff-tree_null")
+
+    val clippableLabel by cssclass("clippable-label")
   }
 
   init {
@@ -55,21 +58,23 @@ internal class AppStyle : Stylesheet() {
       fontWeight = FontWeight.BOLD
     }
     diffTreeRemoved {
-      backgroundColor += c("#e57373")
-      textFill = c("#ecf0f1")
+      backgroundColor += c("#ffcdd2")
       padding = box(0.px, 4.px)
       label {
-        textFill = c("#ecf0f1")
         padding = box(0.px, 1.px)
       }
     }
     diffTreeAdded {
-      backgroundColor += c("#81C784")
-      textFill = c("#ecf0f1")
+      backgroundColor += c("#C8E6C9")
       padding = box(0.px, 4.px)
       label {
-        textFill = c("#ecf0f1")
         padding = box(0.px, 1.px)
+      }
+    }
+
+    clippableLabel {
+      and(focused) {
+        backgroundColor += Color.WHEAT
       }
     }
   }

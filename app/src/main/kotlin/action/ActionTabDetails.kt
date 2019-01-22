@@ -23,23 +23,26 @@ fun EventTarget.actionTabDetails() {
         setDividerPositions(0.33, 0.66, 0.99)
 
         vbox {
-          label("previous") {
+          label("previous state") {
             paddingTop = 8
             paddingBottom = 16
+            paddingLeft = 16
           }
           fieldTree(currentActionPreviousState())
         }
         vbox {
-          label("diff") {
+          label("diff state") {
             paddingTop = 8
             paddingBottom = 16
+            paddingLeft = 16
           }
           fieldTree(currentDiffField())
         }
         vbox {
-          label("current") {
+          label("current state") {
             paddingTop = 8
             paddingBottom = 16
+            paddingLeft = 16
           }
           fieldTree(currentActionNextState())
         }

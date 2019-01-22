@@ -1,12 +1,11 @@
 package com.github.rougsig.devtools.app.common
 
 import com.github.rougsig.devtools.app.AppStyle
+import com.github.rougsig.devtools.app.clipboard.clippableLabel
 import javafx.event.EventTarget
-import javafx.scene.paint.Color
 import tornadofx.CssRule
 import tornadofx.addClass
 import tornadofx.label
-import tornadofx.style
 
 fun EventTarget.bracketLabel(bracket: String) {
   label(bracket)
@@ -32,8 +31,9 @@ fun EventTarget.valueLabel(value: String) {
     }
   }
 
-  label(value)
-    .addClass(getClassByValue())
+  clippableLabel(value) {
+    addClass(getClassByValue())
+  }
 }
 
 fun EventTarget.nameLabel(name: String, isScope: Boolean) {
@@ -45,16 +45,12 @@ fun EventTarget.nameLabel(name: String, isScope: Boolean) {
     }
   }
 
-  label(name).apply {
+  clippableLabel(name) {
     getClassByName()?.let { addClass(it) }
 
+    addClass(AppStyle.clippableLabel)
     setOnMouseClicked {
       requestFocus()
-      println("Clicked: $name")
-    }
-
-    style {
-      focusColor = Color.AQUAMARINE
     }
   }
 }
