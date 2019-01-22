@@ -2,9 +2,11 @@ package com.github.rougsig.devtools.app.common
 
 import com.github.rougsig.devtools.app.AppStyle
 import javafx.event.EventTarget
+import javafx.scene.paint.Color
 import tornadofx.CssRule
 import tornadofx.addClass
 import tornadofx.label
+import tornadofx.style
 
 fun EventTarget.bracketLabel(bracket: String) {
   label(bracket)
@@ -23,9 +25,9 @@ fun EventTarget.objectLabel(text: String) {
 
 fun EventTarget.valueLabel(value: String) {
   fun getClassByValue(): CssRule {
-    return when {
-      value == "true" || value == "false" -> AppStyle.diffTreeBooleanStyle
-      value == "null" -> AppStyle.diffTreeNullStyle
+    return when (value) {
+      "true", "false" -> AppStyle.diffTreeBooleanStyle
+      "null" -> AppStyle.diffTreeNullStyle
       else -> AppStyle.diffTreeStringStyle
     }
   }
@@ -45,5 +47,14 @@ fun EventTarget.nameLabel(name: String, isScope: Boolean) {
 
   label(name).apply {
     getClassByName()?.let { addClass(it) }
+
+    setOnMouseClicked {
+      requestFocus()
+      println("Clicked: $name")
+    }
+
+    style {
+      focusColor = Color.AQUAMARINE
+    }
   }
 }

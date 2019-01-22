@@ -1,17 +1,18 @@
 package com.github.rougsig.devtools.app.scope
 
 import javafx.scene.control.TabPane
-import tornadofx.hbox
+import tornadofx.splitpane
 import tornadofx.tab
 import tornadofx.vbox
 
 fun TabPane.scopeTab() {
   tab("scope") {
     isClosable = false
-    hbox {
+    splitpane {
+      setDividerPositions(0.3, 0.7)
+
       vbox {
-        maxWidth = 360.0
-        scopeFilter()
+        scopeFilter(widthProperty())
         scopeList()
       }
       scopeTabDetails()

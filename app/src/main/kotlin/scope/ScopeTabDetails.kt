@@ -1,6 +1,6 @@
 package com.github.rougsig.devtools.app.scope
 
-import com.github.rougsig.devtools.app.common.fieldTree
+import com.github.rougsig.devtools.app.common.scopeFieldTree
 import com.github.rougsig.devtools.app.store.currentScopeDiff
 import com.github.rougsig.devtools.app.store.currentScopeNextField
 import com.github.rougsig.devtools.app.store.currentScopePreviousField
@@ -15,15 +15,15 @@ fun EventTarget.scopeTabDetails() {
     hgrow = Priority.ALWAYS
     tab("previous scope") {
       isClosable = false
-      fieldTree(currentScopePreviousField(), isScope = true)
+      scopeFieldTree(currentScopePreviousField())
     }
-    tab("scope stateDiff") {
+    tab("scope diff") {
       isClosable = false
-      fieldTree(currentScopeDiff(), isScope = true)
+      scopeFieldTree(currentScopeDiff())
     }
-    tab("next scope") {
+    tab("current scope") {
       isClosable = false
-      fieldTree(currentScopeNextField(), isScope = true)
+      scopeFieldTree(currentScopeNextField())
     }
   }
 }

@@ -56,11 +56,7 @@ internal fun createDiff(previous: Field.NamedField, next: Field.NamedField): Fie
   }
 
   if (previous == next) {
-    return Field.DiffField(
-      name = previous.name,
-      value = null,
-      previousValue = previous
-    )
+    return null
   }
 
   return when (next) {

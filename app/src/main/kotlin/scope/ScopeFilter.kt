@@ -2,18 +2,19 @@ package com.github.rougsig.devtools.app.scope
 
 import com.github.rougsig.devtools.app.store.onScopeFilterChanged
 import com.github.rougsig.devtools.app.store.scopeNames
+import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
 import tornadofx.combobox
-import tornadofx.fitToParentWidth
 import tornadofx.onChange
 
 fun EventTarget.scopeFilter(
   actionNames: ObservableList<String>,
-  onActionFilterChanged: (String) -> Unit
+  onActionFilterChanged: (String) -> Unit,
+  width: ObservableValue<Number>
 ) {
   combobox<String> {
-    fitToParentWidth()
+    prefWidthProperty().bind(width)
     items = actionNames
     isEditable = true
 
@@ -21,7 +22,8 @@ fun EventTarget.scopeFilter(
   }
 }
 
-fun EventTarget.scopeFilter() = scopeFilter(
+fun EventTarget.scopeFilter(width: ObservableValue<Number>) = scopeFilter(
   scopeNames(),
-  onScopeFilterChanged()
+  onScopeFilterChanged(),
+  width
 )

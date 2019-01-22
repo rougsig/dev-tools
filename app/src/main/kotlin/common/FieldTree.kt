@@ -4,15 +4,34 @@ import com.github.rougsig.devtools.domain.Field
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.control.Label
+import javafx.scene.paint.Color
+import tornadofx.box
+import tornadofx.px
 import tornadofx.scrollpane
+import tornadofx.style
 
-fun <T: Field?> EventTarget.fieldTree(
+private fun <T : Field?> EventTarget.fieldTree(
   field: ObservableValue<T>,
-  isScope: Boolean =  false
+  isScope: Boolean
 ) {
-  val content = scrollpane()
+  val content = scrollpane {
+
+    style {
+      focusColor = Color.TRANSPARENT
+      backgroundInsets += box(0.px)
+    }
+  }
 
   field.addListener { _, _, newValue ->
     content.content = newValue?.toNode(isScope = isScope) ?: Label("No Fields")
   }
 }
+
+fun <T : Field?> EventTarget.fieldTree(
+  field: ObservableValue<T>
+) = fieldTree(field, false)
+
+
+fun <T : Field?> EventTarget.scopeFieldTree(
+  field: ObservableValue<T>
+) = fieldTree(field, true)

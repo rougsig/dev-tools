@@ -1,17 +1,18 @@
 package com.github.rougsig.devtools.app.action
 
 import javafx.scene.control.TabPane
-import tornadofx.hbox
+import tornadofx.splitpane
 import tornadofx.tab
 import tornadofx.vbox
 
 fun TabPane.actionTab() {
   tab("action logs") {
     isClosable = false
-    hbox {
+    splitpane {
+      setDividerPositions(0.3, 0.7)
+
       vbox {
-        maxWidth = 360.0
-        actionFilter()
+        actionFilter(widthProperty())
         actionList()
       }
       actionTabDetails()
