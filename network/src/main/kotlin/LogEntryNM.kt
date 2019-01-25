@@ -2,19 +2,13 @@ package com.github.rougsig.devtools.network
 
 import com.google.gson.JsonObject
 
-sealed class LogEntry(internal val type: Type) {
-  internal enum class Type {
-    Action,
-    ScopeOpen,
-    ScopeClose
-  }
-
+sealed class LogEntryNM {
   data class Action(
     val name: String,
     val action: JsonObject,
     val nextState: JsonObject,
     val previousState: JsonObject
-  ) : LogEntry(Type.Action) {
+  ) : LogEntryNM() {
     companion object {
       val INIT = Action(
         name = "Init",
@@ -42,7 +36,7 @@ sealed class LogEntry(internal val type: Type) {
   data class ScopeOpen(
     override val name: String,
     val scope: JsonObject
-  ) : LogEntry(Type.ScopeOpen), Scope {
+  ) : LogEntryNM(), Scope {
     override val scopeJsonObject: JsonObject
       get() = scope
   }
@@ -50,7 +44,7 @@ sealed class LogEntry(internal val type: Type) {
   data class ScopeClose(
     override val name: String,
     val rootScope: JsonObject
-  ) : LogEntry(Type.ScopeClose), Scope {
+  ) : LogEntryNM(), Scope {
     override val scopeJsonObject: JsonObject
       get() = rootScope
   }

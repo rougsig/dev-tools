@@ -10,7 +10,6 @@ import tornadofx.App
 import tornadofx.onChange
 
 internal class App : App(RootView::class, AppStyle::class) {
-
   override fun start(stage: Stage) {
     super.start(stage)
 

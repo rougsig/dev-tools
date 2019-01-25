@@ -1,4 +1,4 @@
-package com.github.rougsig.devtools.domain
+package mappers
 
 internal fun getName(name: String): String {
   return name
