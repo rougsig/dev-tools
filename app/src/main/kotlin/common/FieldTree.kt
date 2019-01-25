@@ -23,7 +23,7 @@ private fun <T : Field?> EventTarget.fieldTree(
   }
 
   field.addListener { _, _, newValue ->
-    content.content = newValue?.toNode(isScope = isScope) ?: Label("No Fields")
+    content.content = newValue!!.toNode(isScope = isScope)
   }
 }
 

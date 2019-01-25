@@ -1,10 +1,7 @@
 package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.common.fieldTree
-import com.github.rougsig.devtools.app.store.currentActionField
-import com.github.rougsig.devtools.app.store.currentActionNextState
-import com.github.rougsig.devtools.app.store.currentActionPreviousState
-import com.github.rougsig.devtools.app.store.currentDiffField
+import com.github.rougsig.devtools.app.store.*
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
 import tornadofx.*
@@ -15,7 +12,7 @@ fun EventTarget.actionTabDetails() {
     hgrow = Priority.ALWAYS
     tab("action") {
       isClosable = false
-      fieldTree(currentActionField())
+      fieldTree(currentAction.action)
     }
     tab("state") {
       isClosable = false
@@ -28,7 +25,7 @@ fun EventTarget.actionTabDetails() {
             paddingBottom = 16
             paddingLeft = 16
           }
-          fieldTree(currentActionPreviousState())
+          fieldTree(currentAction.previousState)
         }
         vbox {
           label("diff state") {
@@ -36,7 +33,7 @@ fun EventTarget.actionTabDetails() {
             paddingBottom = 16
             paddingLeft = 16
           }
-          fieldTree(currentDiffField())
+          fieldTree(currentAction.stateDiff)
         }
         vbox {
           label("current state") {
@@ -44,7 +41,7 @@ fun EventTarget.actionTabDetails() {
             paddingBottom = 16
             paddingLeft = 16
           }
-          fieldTree(currentActionNextState())
+          fieldTree(currentAction.currentState)
         }
       }
     }

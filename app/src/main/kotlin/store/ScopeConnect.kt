@@ -3,40 +3,73 @@ package com.github.rougsig.devtools.app.store
 import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.app.util.subscribeOnUi
 import com.github.rougsig.devtools.domain.Field
-import com.github.rougsig.devtools.domain.Scope
-import com.github.rougsig.devtools.domain.scopeLive
+import com.github.rougsig.devtools.domain.LogEntry
+import com.github.rougsig.devtools.domain.scope.scopeLive
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import tornadofx.observable
 
-private val scopes = mutableListOf<Scope>().observable()
-private val filteredScopes = FilteredList(scopes) { true }
-fun scopes(): ObservableList<Scope> = filteredScopes
+private val scopeList = mutableListOf<LogEntry>().observable()
+fun scopeListLive(): ObservableList<LogEntry> = scopeList
 
-private val currentScope = SimpleObjectProperty(Scope.EMPTY)
-fun currentScope(): ObservableValue<Scope> = currentScope
+private val disposable = scopeLive.subscribeOnUi { scopeList.add(0, it) }
 
-private val currentScopeNextField = currentScope.select { it.nextScope }
-fun currentScopeNextField(): ObservableValue<Field> = currentScopeNextField
+private val filteredScopes = FilteredList(scopeListLive()) { true }
+val scopes: ObservableList<LogEntry> = filteredScopes
 
-private val currentScopePreviousField = currentScope.select { it.previousScope }
-fun currentScopePreviousField(): ObservableValue<Field> = currentScopePreviousField
+private val currentScopeProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init)
+val currentScope: ObservableValue<LogEntry> = currentScopeProperty
 
-private val currentScopeDiff = currentScope.select { it.scopeDiff }
-fun currentScopeDiff(): ObservableValue<Field?> = currentScopeDiff
+val ObservableValue<LogEntry>.currentScope by lazy {
+  currentScopeProperty.select {
+    if (it is LogEntry.Scope) {
+      it.nextScope
+    } else {
+      Field.ValueField("Scope", "Empty Current Scope")
+    }
+  }
+}
+
+val ObservableValue<LogEntry>.previousScope by lazy {
+  currentScopeProperty.select {
+    if (it is LogEntry.Scope) {
+      it.previousScope
+    } else {
+      Field.ValueField("Scope", "Empty Previous Scope")
+    }
+  }
+}
+
+val ObservableValue<LogEntry>.scopeDiff by lazy {
+  currentScopeProperty.select {
+    if (it is LogEntry.Scope) {
+      it.scopeDiff
+    } else {
+      Field.ValueField("Scope", "Empty Scope Diff")
+    }
+  }
+}
+
+val LogEntry.isOpen: Boolean
+  get() {
+    return if (this is LogEntry.Scope) {
+      this.isOpen
+    } else {
+      true
+    }
+  }
 
 private val scopeNames = mutableListOf<String>().observable()
 fun scopeNames(): ObservableList<String> = scopeNames
 
-private val onScopeClick = { scope: Scope -> currentScope.set(scope) }
-fun onScopeClick(): (Scope) -> Unit = onScopeClick
+private val onScopeClick = { scope: LogEntry -> currentScopeProperty.set(scope) }
+fun onScopeClick(): (LogEntry) -> Unit = onScopeClick
 
 fun onClearScopeListClick() {
-  scopes.setAll(Scope.EMPTY)
   scopeNames.clear()
-  currentScope.set(Scope.EMPTY)
+  currentScopeProperty.set(LogEntry.Init)
 }
 
 private val onScopeFilterChanged = { name: String ->
@@ -50,11 +83,3 @@ private val onScopeFilterChanged = { name: String ->
 }
 
 fun onScopeFilterChanged(): (String) -> Unit = onScopeFilterChanged
-
-@Suppress("Unused")
-private val connection = scopeLive().subscribeOnUi { scope ->
-  scopes.add(0, scope)
-  if (!scopeNames.contains(scope.name)) {
-    scopeNames.add(scope.name)
-  }
-}
