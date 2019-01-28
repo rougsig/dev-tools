@@ -3,7 +3,7 @@ package com.github.rougsig.devtools.domain
 sealed class LogEntry {
   abstract val name: String
 
-  object Init: LogEntry() {
+  object Init : LogEntry() {
     override val name: String = "@@INIT"
   }
 
@@ -13,7 +13,7 @@ sealed class LogEntry {
     val nextState: Field,
     val previousState: Field,
     val stateDiff: Field?
-  ): LogEntry()
+  ) : LogEntry()
 
   data class Scope(
     override val name: String,
@@ -21,5 +21,5 @@ sealed class LogEntry {
     val previousScope: Field,
     val scopeDiff: Field?,
     val isOpen: Boolean
-  ): LogEntry()
+  ) : LogEntry()
 }

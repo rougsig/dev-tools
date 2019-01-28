@@ -11,12 +11,12 @@ import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import tornadofx.observable
 
-private val scopeList = mutableListOf<LogEntry>().observable()
-fun scopeListLive(): ObservableList<LogEntry> = scopeList
+val scopeList = mutableListOf<LogEntry>().observable()
+val scopeListLive: ObservableList<LogEntry> = scopeList
 
 private val disposable = scopeLive.subscribeOnUi { scopeList.add(0, it) }
 
-private val filteredScopes = FilteredList(scopeListLive()) { true }
+private val filteredScopes = FilteredList(scopeListLive) { true }
 val scopes: ObservableList<LogEntry> = filteredScopes
 
 private val currentScopeProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init)

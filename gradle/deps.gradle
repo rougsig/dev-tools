@@ -1,29 +1,29 @@
 ext {
-  kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-  gson =  "com.google.code.gson:gson:2.8.5"
+    kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    gson = "com.google.code.gson:gson:2.8.5"
 
-  rxJava = [
-      "io.reactivex.rxjava2:rxjava:2.2.4",
-      "com.jakewharton.rxrelay2:rxrelay:2.1.0"
-  ]
+    rxJava = [
+            "io.reactivex.rxjava2:rxjava:2.2.4",
+            "com.jakewharton.rxrelay2:rxrelay:2.1.0"
+    ]
 
-  tornadoFX = [
-      "no.tornado:tornadofx:1.7.17"
-  ]
+    tornadoFX = [
+            "no.tornado:tornadofx:1.7.17"
+    ]
 
-  core = [
-      kotlin,
-      rxJava
-  ]
+    core = [
+            kotlin,
+            rxJava
+    ]
 
-  network = [
-      "io.javalin:javalin:2.4.0",
-      "org.slf4j:slf4j-simple:1.7.25",
-      gson
-  ]
+    network = [
+            "io.javalin:javalin:2.4.0",
+            "org.slf4j:slf4j-simple:1.7.25",
+            gson
+    ]
 
-  junit = [
-      "junit:junit:4.12",
-      "org.assertj:assertj-core:3.6.2"
-  ]
+    junit = [
+            "junit:junit:4.12",
+            "org.assertj:assertj-core:3.6.2"
+    ]
 }

@@ -2,10 +2,10 @@ package com.github.rougsig.devtools.domain.scope
 
 import com.github.rougsig.devtools.core.pairwise
 import com.github.rougsig.devtools.domain.LogEntry
-import mappers.createDiff
 import com.github.rougsig.devtools.network.LogEntryNM
 import com.github.rougsig.devtools.network.logLive
 import io.reactivex.Observable
+import mappers.createDiff
 import mappers.toField
 
 val scopeLive = Observable

@@ -1,31 +1,32 @@
 package com.github.rougsig.devtools.app.settings
 
-import javafx.beans.property.ReadOnlyDoubleProperty
+import com.github.rougsig.devtools.app.store.exportStore
+import com.github.rougsig.devtools.app.store.importStore
 import javafx.event.EventTarget
+import javafx.scene.Node
 import tornadofx.button
 import tornadofx.fitToParentWidth
 import tornadofx.hbox
 
-fun EventTarget.settingsRow(width: ReadOnlyDoubleProperty) {
+fun EventTarget.settingsRow() {
   hbox {
     fitToParentWidth()
+    button("Import") {
+      minWidthProperty().bind(this@hbox.widthProperty().divide(3))
 
-    button("Start recording") {
-      minWidthProperty().bind(this@hbox.widthProperty().divide(4))
+      setOnMouseClicked {
+        importStore((this@settingsRow as Node).scene.window)
+      }
     }
-    button("Pause recording"){
-      isVisible = false
-      isManaged = false
-      minWidthProperty().bind(this@hbox.widthProperty().divide(4))
+    button("Export") {
+      minWidthProperty().bind(this@hbox.widthProperty().divide(3))
+
+      setOnMouseClicked {
+        exportStore((this@settingsRow as Node).scene.window)
+      }
     }
-    button("Import"){
-      minWidthProperty().bind(this@hbox.widthProperty().divide(4))
-    }
-    button("Export"){
-      minWidthProperty().bind(this@hbox.widthProperty().divide(4))
-    }
-    button("v0.0.8"){
-      minWidthProperty().bind(this@hbox.widthProperty().divide(4))
+    button("v0.0.8") {
+      minWidthProperty().bind(this@hbox.widthProperty().divide(3))
     }
   }
 }

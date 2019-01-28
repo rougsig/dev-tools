@@ -2,16 +2,17 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 compileKotlin {
-  kotlinOptions.jvmTarget= 1.8
+    kotlinOptions.jvmTarget = 1.8
 }
 
 dependencies {
-  implementation project(":core")
-  implementation project(":domain")
-  implementation rootProject.ext.core
-  implementation rootProject.ext.tornadoFX
+    implementation project(":core")
+    implementation project(":domain")
+    implementation rootProject.ext.core
+    implementation rootProject.ext.tornadoFX
+    implementation rootProject.ext.gson
 }

@@ -11,12 +11,12 @@ import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import tornadofx.observable
 
-private val actionList = mutableListOf<LogEntry>().observable()
-fun actionListLive(): ObservableList<LogEntry> = actionList
+val actionList = mutableListOf<LogEntry>().observable()
+val actionListLive: ObservableList<LogEntry> = actionList
 
 private val disposable = actionLive.subscribeOnUi { actionList.add(0, it) }
 
-private val filteredActions = FilteredList(actionListLive()) { true }
+private val filteredActions = FilteredList(actionListLive) { true }
 val actions: ObservableList<LogEntry> = filteredActions
 
 private val currentActionProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init)

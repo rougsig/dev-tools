@@ -1,10 +1,10 @@
 package com.github.rougsig.devtools.domain.action
 
 import com.github.rougsig.devtools.domain.LogEntry
-import mappers.createDiff
-import mappers.getName
 import com.github.rougsig.devtools.network.LogEntryNM
 import com.github.rougsig.devtools.network.logLive
+import mappers.createDiff
+import mappers.getName
 import mappers.toField
 
 val actionLive = logLive()

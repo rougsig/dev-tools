@@ -1,6 +1,5 @@
 package com.github.rougsig.devtools.app
 
-import com.github.rougsig.devtools.app.about.aboutTab
 import com.github.rougsig.devtools.app.action.actionTab
 import com.github.rougsig.devtools.app.info.infoTab
 import com.github.rougsig.devtools.app.scope.scopeTab
@@ -23,9 +22,8 @@ internal class RootView : View() {
       actionTab()
       scopeTab()
       infoTab()
-      aboutTab()
     }
 
-    settingsRow(widthProperty())
+    settingsRow()
   }
 }

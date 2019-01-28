@@ -3,7 +3,6 @@ package com.github.rougsig.devtools.app.common
 import com.github.rougsig.devtools.domain.Field
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
-import javafx.scene.control.Label
 import javafx.scene.paint.Color
 import tornadofx.box
 import tornadofx.px
