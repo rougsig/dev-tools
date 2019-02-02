@@ -26,7 +26,7 @@ fun EventTarget.scopeList(
         pane {
           hgrow = Priority.ALWAYS
         }
-        label("+${scope.time}ms") {
+        label(scope.time) {
           addClass(AppStyle.actionListLabel)
         }
 

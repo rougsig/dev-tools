@@ -2,6 +2,7 @@ package com.github.rougsig.devtools.domain.scope
 
 import com.github.rougsig.devtools.core.pairwise
 import com.github.rougsig.devtools.domain.LogEntry
+import com.github.rougsig.devtools.domain.mappers.toTime
 import com.github.rougsig.devtools.network.LogEntryNM
 import com.github.rougsig.devtools.network.logLive
 import io.reactivex.Observable
@@ -23,7 +24,7 @@ val scopeLive: Observable<LogEntry.Scope> = Observable
 
     LogEntry.Scope(
       name = nextLog.first.name,
-      time = nextLog.second - previousLog.second,
+      time = (nextLog.second - previousLog.second).toTime(),
       previousScope = previousScope,
       nextScope = nextScope,
       scopeDiff = scopeDiff,

@@ -25,7 +25,7 @@ fun EventTarget.actionList(
         pane {
           hgrow = Priority.ALWAYS
         }
-        label("+${action.time}ms") {
+        label(action.time) {
           addClass(AppStyle.actionListLabel)
         }
       }

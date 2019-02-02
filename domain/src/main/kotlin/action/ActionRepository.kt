@@ -2,6 +2,7 @@ package com.github.rougsig.devtools.domain.action
 
 import com.github.rougsig.devtools.core.pairwise
 import com.github.rougsig.devtools.domain.LogEntry
+import com.github.rougsig.devtools.domain.mappers.toTime
 import com.github.rougsig.devtools.network.LogEntryNM
 import com.github.rougsig.devtools.network.logLive
 import io.reactivex.Observable
@@ -25,7 +26,7 @@ val actionLive: Observable<LogEntry.Action> = Observable
 
     LogEntry.Action(
       name = getName(nextLog.first.name),
-      time = nextLog.second - previousLog.second,
+      time = (nextLog.second - previousLog.second).toTime(),
       action = field,
       previousState = previousState,
       nextState = nextState,
