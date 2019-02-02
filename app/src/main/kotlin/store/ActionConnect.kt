@@ -14,8 +14,6 @@ import tornadofx.observable
 val actionList = mutableListOf<LogEntry>().observable()
 val actionListLive: ObservableList<LogEntry> = actionList
 
-private val disposable = actionLive.subscribeOnUi { actionList.add(0, it) }
-
 private val filteredActions = FilteredList(actionListLive) { true }
 val actions: ObservableList<LogEntry> = filteredActions
 
@@ -86,3 +84,8 @@ private val onActionFilterChanged = { name: String ->
 }
 
 fun onActionFilterChanged(): (String) -> Unit = onActionFilterChanged
+
+private val disposable = actionLive.subscribeOnUi {
+  actionList.add(0, it)
+  if (!actionNames.contains(it.name)) actionNames.add(it.name)
+}

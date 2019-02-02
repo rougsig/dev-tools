@@ -14,8 +14,6 @@ import tornadofx.observable
 val scopeList = mutableListOf<LogEntry>().observable()
 val scopeListLive: ObservableList<LogEntry> = scopeList
 
-private val disposable = scopeLive.subscribeOnUi { scopeList.add(0, it) }
-
 private val filteredScopes = FilteredList(scopeListLive) { true }
 val scopes: ObservableList<LogEntry> = filteredScopes
 
@@ -85,3 +83,9 @@ private val onScopeFilterChanged = { name: String ->
 }
 
 fun onScopeFilterChanged(): (String) -> Unit = onScopeFilterChanged
+
+
+private val disposable = scopeLive.subscribeOnUi {
+  scopeList.add(0, it)
+  if (!scopeNames.contains(it.name)) scopeNames.add(it.name)
+}
