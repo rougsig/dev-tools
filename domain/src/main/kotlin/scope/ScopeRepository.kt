@@ -8,24 +8,25 @@ import io.reactivex.Observable
 import mappers.createDiff
 import mappers.toField
 
-val scopeLive = Observable
+val scopeLive: Observable<LogEntry.Scope> = Observable
   .merge(
     Observable.just(LogEntryNM.Scope.INIT),
     logLive()
   )
   .ofType(LogEntryNM.Scope::class.java)
+  .map { it to System.currentTimeMillis() }
   .pairwise()
-  .map<LogEntry> { (previousLog, nextLog) ->
-    val previousScope = previousLog.scopeJsonObject.toField("Scope")
-    val nextScope = nextLog.scopeJsonObject.toField("Scope")
+  .map { (previousLog, nextLog) ->
+    val previousScope = previousLog.first.scopeJsonObject.toField("Scope")
+    val nextScope = nextLog.first.scopeJsonObject.toField("Scope")
     val scopeDiff = createDiff(previousScope, nextScope)
 
     LogEntry.Scope(
-      name = nextLog.name,
+      name = nextLog.first.name,
+      time = nextLog.second - previousLog.second,
       previousScope = previousScope,
       nextScope = nextScope,
       scopeDiff = scopeDiff,
-      isOpen = nextLog.isOpen
+      isOpen = nextLog.first.isOpen
     )
   }
-  .startWith(LogEntry.Init)!!

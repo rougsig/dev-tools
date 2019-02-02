@@ -17,7 +17,7 @@ val scopeListLive: ObservableList<LogEntry> = scopeList
 private val filteredScopes = FilteredList(scopeListLive) { true }
 val scopes: ObservableList<LogEntry> = filteredScopes
 
-private val currentScopeProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init)
+private val currentScopeProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init())
 val currentScope: ObservableValue<LogEntry> = currentScopeProperty
 
 val ObservableValue<LogEntry>.currentScope by lazy {
@@ -68,8 +68,8 @@ fun onScopeClick(): (LogEntry) -> Unit = onScopeClick
 fun onClearScopeListClick() {
   scopeList.clear()
   scopeNames.clear()
-  scopeList.add(0, LogEntry.Init)
-  currentScopeProperty.set(LogEntry.Init)
+  scopeList.add(0, LogEntry.Init())
+  currentScopeProperty.set(LogEntry.Init())
 }
 
 private val onScopeFilterChanged = { name: String ->

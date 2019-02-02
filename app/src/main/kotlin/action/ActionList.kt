@@ -16,9 +16,18 @@ fun EventTarget.actionList(
   listview(actions) {
     hgrow = Priority.ALWAYS
     vgrow = Priority.ALWAYS
+
     cellFormat { action ->
-      graphic = label(action.name) {
-        addClass(AppStyle.actionListLabel)
+      graphic = hbox {
+        label(action.name) {
+          addClass(AppStyle.actionListLabel)
+        }
+        pane {
+          hgrow = Priority.ALWAYS
+        }
+        label("+${action.time}ms") {
+          addClass(AppStyle.actionListLabel)
+        }
       }
     }
     onUserSelect(1, onActionClick)

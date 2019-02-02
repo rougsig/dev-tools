@@ -17,9 +17,18 @@ fun EventTarget.scopeList(
   listview(actions) {
     hgrow = Priority.ALWAYS
     vgrow = Priority.ALWAYS
+
     cellFormat { scope ->
-      graphic = label(scope.name) {
-        addClass(AppStyle.actionListLabel)
+      graphic = hbox {
+        label(scope.name) {
+          addClass(AppStyle.actionListLabel)
+        }
+        pane {
+          hgrow = Priority.ALWAYS
+        }
+        label("+${scope.time}ms") {
+          addClass(AppStyle.actionListLabel)
+        }
 
         if (scope.isOpen) {
           addClass(AppStyle.diffTreeAdded)

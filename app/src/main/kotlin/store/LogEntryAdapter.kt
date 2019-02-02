@@ -14,7 +14,7 @@ class LogEntryAdapter : JsonDeserializer<LogEntry>, JsonSerializer<LogEntry> {
   override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext): LogEntry {
     val obj = json.asJsonObject
     return when (obj.get("type").asString) {
-      "Init" -> LogEntry.Init
+      "Init" -> LogEntry.Init()
       "Action" -> context.deserialize(json, LogEntry.Action::class.java)
       "Scope" -> context.deserialize(json, LogEntry.Scope::class.java)
       else -> throw UnsupportedOperationException("unknown type: $json")

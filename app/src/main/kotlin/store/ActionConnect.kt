@@ -17,7 +17,7 @@ val actionListLive: ObservableList<LogEntry> = actionList
 private val filteredActions = FilteredList(actionListLive) { true }
 val actions: ObservableList<LogEntry> = filteredActions
 
-private val currentActionProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init)
+private val currentActionProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init())
 val currentAction: ObservableValue<LogEntry> = currentActionProperty
 
 val ObservableValue<LogEntry>.action by lazy {
@@ -69,8 +69,8 @@ fun onActionClick(): (LogEntry) -> Unit = onActionClick
 fun onClearActionListClick() {
   actionList.clear()
   actionNames.clear()
-  actionList.add(0, LogEntry.Init)
-  currentActionProperty.set(LogEntry.Init)
+  actionList.add(0, LogEntry.Init())
+  currentActionProperty.set(LogEntry.Init())
 }
 
 private val onActionFilterChanged = { name: String ->

@@ -19,9 +19,9 @@ sealed class LogEntryNM {
     }
   }
 
-  interface Scope {
-    val name: String
-    val scopeJsonObject: JsonObject
+  abstract class Scope : LogEntryNM() {
+    abstract val name: String
+    abstract val scopeJsonObject: JsonObject
     val isOpen
       get() = this is ScopeOpen
 
@@ -36,7 +36,7 @@ sealed class LogEntryNM {
   data class ScopeOpen(
     override val name: String,
     val scope: JsonObject
-  ) : LogEntryNM(), Scope {
+  ) : Scope() {
     override val scopeJsonObject: JsonObject
       get() = scope
   }
@@ -44,7 +44,7 @@ sealed class LogEntryNM {
   data class ScopeClose(
     override val name: String,
     val rootScope: JsonObject
-  ) : LogEntryNM(), Scope {
+  ) : Scope() {
     override val scopeJsonObject: JsonObject
       get() = rootScope
   }
