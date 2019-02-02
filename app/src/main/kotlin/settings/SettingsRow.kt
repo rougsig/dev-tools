@@ -25,7 +25,7 @@ fun EventTarget.settingsRow() {
         exportStore((this@settingsRow as Node).scene.window)
       }
     }
-    button("v0.0.8") {
+    button("v0.0.9") {
       minWidthProperty().bind(this@hbox.widthProperty().divide(3))
     }
   }
