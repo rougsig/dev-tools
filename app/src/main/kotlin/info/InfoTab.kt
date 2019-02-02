@@ -1,5 +1,6 @@
 package com.github.rougsig.devtools.app.info
 
+import com.github.rougsig.devtools.app.clipboard.clippableLabel
 import javafx.geometry.Pos
 import javafx.scene.control.TabPane
 import tornadofx.label
@@ -14,7 +15,7 @@ fun TabPane.infoTab() {
     vbox {
       label("Your local ip is one of these:")
       getInetAddresses().forEach {
-        label(it.hostAddress)
+        clippableLabel(it.hostAddress)
       }
       alignment = Pos.CENTER
     }
