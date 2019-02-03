@@ -2,9 +2,9 @@ package com.github.rougsig.devtools.app.store
 
 import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.app.util.subscribeOnUi
-import com.github.rougsig.devtools.domain.Field
-import com.github.rougsig.devtools.domain.LogEntry
-import com.github.rougsig.devtools.domain.action.actionLive
+import com.github.rougsig.devtools.domain.presenterStateChangeLive
+import com.github.rougsig.devtools.entity.Field
+import com.github.rougsig.devtools.entity.LogEntry
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
@@ -22,40 +22,40 @@ val currentAction: ObservableValue<LogEntry> = currentActionProperty
 
 val ObservableValue<LogEntry>.action by lazy {
   currentActionProperty.select {
-    if (it is LogEntry.Action) {
+    if (it is LogEntry.PresenterStateChange) {
       it.action
     } else {
-      Field.ValueField("Action", "Empty Action")
+      Field.ValueField("PresenterStateChange", "Empty PresenterStateChange")
     }
   }
 }
 
 val ObservableValue<LogEntry>.currentState by lazy {
   currentActionProperty.select {
-    if (it is LogEntry.Action) {
+    if (it is LogEntry.PresenterStateChange) {
       it.nextState
     } else {
-      Field.ValueField("Action", "Empty Next State")
+      Field.ValueField("PresenterStateChange", "Empty Next State")
     }
   }
 }
 
 val ObservableValue<LogEntry>.previousState by lazy {
   currentActionProperty.select {
-    if (it is LogEntry.Action) {
+    if (it is LogEntry.PresenterStateChange) {
       it.previousState
     } else {
-      Field.ValueField("Action", "Empty Previous State")
+      Field.ValueField("PresenterStateChange", "Empty Previous State")
     }
   }
 }
 
 val ObservableValue<LogEntry>.stateDiff by lazy {
   currentActionProperty.select {
-    if (it is LogEntry.Action) {
+    if (it is LogEntry.PresenterStateChange) {
       it.stateDiff
     } else {
-      Field.ValueField("Action", "Empty State Diff")
+      Field.ValueField("PresenterStateChange", "Empty State Diff")
     }
   }
 }
@@ -85,7 +85,7 @@ private val onActionFilterChanged = { name: String ->
 
 fun onActionFilterChanged(): (String) -> Unit = onActionFilterChanged
 
-private val disposable = actionLive.subscribeOnUi {
+private val disposable = presenterStateChangeLive.subscribeOnUi {
   actionList.add(0, it)
   if (!actionNames.contains(it.name)) actionNames.add(it.name)
 }

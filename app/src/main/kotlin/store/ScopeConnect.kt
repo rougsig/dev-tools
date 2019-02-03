@@ -2,9 +2,9 @@ package com.github.rougsig.devtools.app.store
 
 import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.app.util.subscribeOnUi
-import com.github.rougsig.devtools.domain.Field
-import com.github.rougsig.devtools.domain.LogEntry
-import com.github.rougsig.devtools.domain.scope.scopeLive
+import com.github.rougsig.devtools.domain.scopeLive
+import com.github.rougsig.devtools.entity.Field
+import com.github.rougsig.devtools.entity.LogEntry
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
@@ -22,7 +22,7 @@ val currentScope: ObservableValue<LogEntry> = currentScopeProperty
 
 val ObservableValue<LogEntry>.currentScope by lazy {
   currentScopeProperty.select {
-    if (it is LogEntry.Scope) {
+    if (it is LogEntry.ScopeChange) {
       it.nextScope
     } else {
       Field.ValueField("Scope", "Empty Current Scope")
@@ -32,7 +32,7 @@ val ObservableValue<LogEntry>.currentScope by lazy {
 
 val ObservableValue<LogEntry>.previousScope by lazy {
   currentScopeProperty.select {
-    if (it is LogEntry.Scope) {
+    if (it is LogEntry.ScopeChange) {
       it.previousScope
     } else {
       Field.ValueField("Scope", "Empty Previous Scope")
@@ -42,7 +42,7 @@ val ObservableValue<LogEntry>.previousScope by lazy {
 
 val ObservableValue<LogEntry>.scopeDiff by lazy {
   currentScopeProperty.select {
-    if (it is LogEntry.Scope) {
+    if (it is LogEntry.ScopeChange) {
       it.scopeDiff
     } else {
       Field.ValueField("Scope", "Empty Scope Diff")
@@ -52,7 +52,7 @@ val ObservableValue<LogEntry>.scopeDiff by lazy {
 
 val LogEntry.isOpen: Boolean
   get() {
-    return if (this is LogEntry.Scope) {
+    return if (this is LogEntry.ScopeChange) {
       this.isOpen
     } else {
       true

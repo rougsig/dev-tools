@@ -1,45 +1,42 @@
-package com.github.rougsig.devtools.domain
+package com.github.rougsig.devtools.entity
 
 sealed class Field {
-
-  abstract class NamedField : Field() {
-    abstract val name: String
-  }
+  abstract val name: String
 
   data class ObjectField(
     override val name: String,
-    val value: List<NamedField>
-  ) : NamedField()
+    val value: List<Field>
+  ) : Field()
 
   data class ArrayField(
     override val name: String,
-    val value: List<NamedField>
-  ) : NamedField()
+    val value: List<Field>
+  ) : Field()
 
   data class ValueField(
     override val name: String,
     val value: String
-  ) : NamedField()
+  ) : Field()
 
   data class NullField(
     override val name: String
-  ) : NamedField()
+  ) : Field()
 
   data class DiffField(
     override val name: String,
     val value: Field?,
     val previousValue: Field
-  ) : NamedField()
+  ) : Field()
 
   data class AddedField(
     override val name: String,
     val value: Field
-  ) : NamedField()
+  ) : Field()
 
   data class RemovedField(
     override val name: String,
     val value: Field
-  ) : NamedField()
+  ) : Field()
 }
 
 fun Field.isEqualTypeTo(anotherField: Field): Boolean {

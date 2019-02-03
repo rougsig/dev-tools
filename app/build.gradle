@@ -12,7 +12,7 @@ compileKotlin {
 dependencies {
     implementation project(":core")
     implementation project(":domain")
+    implementation project(":entity")
     implementation rootProject.ext.core
     implementation rootProject.ext.tornadoFX
-    implementation rootProject.ext.gson
 }

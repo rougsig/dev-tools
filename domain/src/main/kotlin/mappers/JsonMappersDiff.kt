@@ -1,10 +1,10 @@
-package mappers
+package com.github.rougsig.devtools.domain.mappers
 
-import com.github.rougsig.devtools.domain.Field
-import com.github.rougsig.devtools.domain.isEqualTypeTo
-import com.github.rougsig.devtools.domain.isNullType
+import com.github.rougsig.devtools.entity.Field
+import com.github.rougsig.devtools.entity.isEqualTypeTo
+import com.github.rougsig.devtools.entity.isNullType
 
-internal fun createDiff(previous: Field.NamedField, next: Field.NamedField): Field.NamedField? {
+internal fun createDiff(previous: Field, next: Field): Field? {
   if (previous.name != next.name) {
     throw IllegalStateException("previous.name != next.name. ${previous.name} != ${next.name}")
   }

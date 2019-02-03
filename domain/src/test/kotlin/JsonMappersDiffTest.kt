@@ -1,5 +1,7 @@
 package com.github.rougsig.devtools.domain
 
+import com.github.rougsig.devtools.domain.mappers.createDiff
+import com.github.rougsig.devtools.entity.Field
 import com.google.gson.JsonArray
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject

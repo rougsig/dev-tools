@@ -1,7 +1,7 @@
 package com.github.rougsig.devtools.app.common
 
 import com.github.rougsig.devtools.app.AppStyle
-import com.github.rougsig.devtools.domain.Field
+import com.github.rougsig.devtools.entity.Field
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
@@ -144,7 +144,6 @@ fun Field.toNode(
     is Field.DiffField -> toDiffNode(skipName, isCollapsed)
     is Field.AddedField -> toAddedNode(skipName, isCollapsed)
     is Field.RemovedField -> toRemovedNode(skipName, isCollapsed)
-    is Field.NamedField -> throw IllegalStateException("unable to create Node from: NamedField")
   }.apply {
     addClass(AppStyle.diffTreeMainStyle)
     if (!skipName) paddingLeft = FIELD_TREE_SPACE

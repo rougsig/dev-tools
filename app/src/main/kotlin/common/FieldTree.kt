@@ -1,6 +1,6 @@
 package com.github.rougsig.devtools.app.common
 
-import com.github.rougsig.devtools.domain.Field
+import com.github.rougsig.devtools.entity.Field
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.paint.Color
