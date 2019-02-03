@@ -20,6 +20,7 @@ sourceSets {
 dependencies {
     implementation project(":core")
     implementation project(":network")
+    implementation project(":entity")
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.rxJava
     implementation rootProject.ext.gson

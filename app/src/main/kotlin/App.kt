@@ -2,7 +2,7 @@ package com.github.rougsig.devtools.app
 
 import com.github.rougsig.devtools.app.clipboard.copyClippableLabel
 import com.github.rougsig.devtools.app.clipboard.nodeToClipboard
-import com.github.rougsig.devtools.domain.stopServer
+import com.github.rougsig.devtools.domain.stopWsServer
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.stage.Stage
@@ -28,6 +28,6 @@ internal class App : App(RootView::class, AppStyle::class) {
 
   override fun stop() {
     super.stop()
-    stopServer()
+    stopWsServer()
   }
 }

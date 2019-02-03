@@ -1,7 +1,6 @@
 package com.github.rougsig.devtools.app.scope
 
-import com.github.rougsig.devtools.app.store.onScopeFilterChanged
-import com.github.rougsig.devtools.app.store.scopeNames
+import com.github.rougsig.devtools.app.store.ScopeConnect
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
@@ -23,7 +22,7 @@ fun EventTarget.scopeFilter(
 }
 
 fun EventTarget.scopeFilter(width: ObservableValue<Number>) = scopeFilter(
-  scopeNames(),
-  onScopeFilterChanged(),
+  ScopeConnect.logNames,
+  ScopeConnect.filterChangeListener,
   width
 )

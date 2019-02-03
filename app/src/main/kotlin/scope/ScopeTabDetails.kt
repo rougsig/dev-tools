@@ -1,29 +1,39 @@
 package com.github.rougsig.devtools.app.scope
 
 import com.github.rougsig.devtools.app.common.scopeFieldTree
-import com.github.rougsig.devtools.app.store.currentScope
-import com.github.rougsig.devtools.app.store.previousScope
-import com.github.rougsig.devtools.app.store.scopeDiff
+import com.github.rougsig.devtools.app.store.ScopeConnect
+import com.github.rougsig.devtools.entity.Field
+import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
 import tornadofx.hgrow
 import tornadofx.tab
 import tornadofx.tabpane
 
-fun EventTarget.scopeTabDetails() {
+fun EventTarget.scopeTabDetails(
+  previousScope: ObservableValue<Field>,
+  scopeDiff: ObservableValue<Field?>,
+  currentScope: ObservableValue<Field>
+) {
   tabpane {
     hgrow = Priority.ALWAYS
     tab("previous scope") {
       isClosable = false
-      scopeFieldTree(currentScope.previousScope)
+      scopeFieldTree(previousScope)
     }
     tab("scope diff") {
       isClosable = false
-      scopeFieldTree(currentScope.scopeDiff)
+      scopeFieldTree(scopeDiff)
     }
     tab("current scope") {
       isClosable = false
-      scopeFieldTree(currentScope.currentScope)
+      scopeFieldTree(currentScope)
     }
   }
 }
+
+fun EventTarget.scopeTabDetails() = scopeTabDetails(
+  ScopeConnect.previousScope,
+  ScopeConnect.scopeDiff,
+  ScopeConnect.currentScope
+)

@@ -1,30 +1,35 @@
 package com.github.rougsig.devtools.network
 
-import com.google.gson.GsonBuilder
 import com.jakewharton.rxrelay2.PublishRelay
 import io.javalin.Javalin
+import io.javalin.websocket.WsSession
 import io.reactivex.Observable
 
-private val gson = GsonBuilder()
-  .registerTypeAdapter(LogEntryNM::class.java, LogEntryAdapter())
-  .create()
+object WsServer {
+  private val sessions = mutableListOf<WsSession>()
+  private val messageRelay = PublishRelay.create<String>()
 
-@Suppress("Unused")
-private val ws = Javalin.create()
-  .ws("/") { ws ->
-    ws.onMessage { _, msg ->
-      when (val log = gson.fromJson(msg, LogEntryNM::class.java)) {
-        is LogEntryNM.Action -> logRelay.accept(log)
-        is LogEntryNM.ScopeOpen -> logRelay.accept(log)
-        is LogEntryNM.ScopeClose -> logRelay.accept(log)
+  private val javalin = Javalin.create()
+    .ws("/") { ws ->
+      ws.onMessage { _, msg ->
+        messageRelay.accept(msg)
+      }
+      ws.onConnect { session ->
+        println("Connect from: $session")
+        sessions.add(session)
+      }
+      ws.onClose { session, statusCode, reason ->
+        println("Close from: $session, statusCode: $statusCode, reason: $reason")
+        sessions.remove(session)
       }
     }
+    .start(10002)
+
+  fun messageLive(): Observable<String> {
+    return messageRelay
   }
-  .start(10002)
 
-private val logRelay = PublishRelay.create<LogEntryNM>()
-fun logLive(): Observable<LogEntryNM> = logRelay
-
-fun stopWs() {
-  ws.stop()
+  fun stop() {
+    javalin.stop()
+  }
 }

@@ -1,18 +1,24 @@
 package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.common.fieldTree
-import com.github.rougsig.devtools.app.store.*
+import com.github.rougsig.devtools.app.store.ActionConnect
+import com.github.rougsig.devtools.entity.Field
+import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
 import tornadofx.*
 
-fun EventTarget.actionTabDetails() {
-
+fun EventTarget.actionTabDetails(
+  action: ObservableValue<Field>,
+  previousState: ObservableValue<Field>,
+  stateDiff: ObservableValue<Field?>,
+  currentState: ObservableValue<Field>
+) {
   tabpane {
     hgrow = Priority.ALWAYS
     tab("action") {
       isClosable = false
-      fieldTree(currentAction.action)
+      fieldTree(action)
     }
     tab("state") {
       isClosable = false
@@ -25,7 +31,7 @@ fun EventTarget.actionTabDetails() {
             paddingBottom = 16
             paddingLeft = 16
           }
-          fieldTree(currentAction.previousState)
+          fieldTree(previousState)
         }
         vbox {
           label("diff state") {
@@ -33,7 +39,7 @@ fun EventTarget.actionTabDetails() {
             paddingBottom = 16
             paddingLeft = 16
           }
-          fieldTree(currentAction.stateDiff)
+          fieldTree(stateDiff)
         }
         vbox {
           label("current state") {
@@ -41,9 +47,16 @@ fun EventTarget.actionTabDetails() {
             paddingBottom = 16
             paddingLeft = 16
           }
-          fieldTree(currentAction.currentState)
+          fieldTree(currentState)
         }
       }
     }
   }
 }
+
+fun EventTarget.actionTabDetails() = actionTabDetails(
+  ActionConnect.action,
+  ActionConnect.previousState,
+  ActionConnect.stateDiff,
+  ActionConnect.currentState
+)

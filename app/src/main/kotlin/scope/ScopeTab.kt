@@ -1,5 +1,7 @@
 package com.github.rougsig.devtools.app.scope
 
+import com.github.rougsig.devtools.app.common.clearButton
+import com.github.rougsig.devtools.app.store.ScopeConnect
 import javafx.scene.control.TabPane
 import tornadofx.splitpane
 import tornadofx.tab
@@ -14,7 +16,7 @@ fun TabPane.scopeTab() {
       vbox {
         scopeFilter(widthProperty())
         scopeList()
-        cleatScopeListButton(widthProperty())
+        clearButton(widthProperty(), "scope list", ScopeConnect::reset)
       }
       scopeTabDetails()
     }

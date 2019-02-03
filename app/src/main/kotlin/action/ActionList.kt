@@ -1,9 +1,8 @@
 package com.github.rougsig.devtools.app.action
 
 import com.github.rougsig.devtools.app.AppStyle
-import com.github.rougsig.devtools.app.store.actions
-import com.github.rougsig.devtools.app.store.onActionClick
-import com.github.rougsig.devtools.domain.LogEntry
+import com.github.rougsig.devtools.app.store.ActionConnect
+import com.github.rougsig.devtools.entity.LogEntry
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
 import javafx.scene.layout.Priority
@@ -25,7 +24,7 @@ fun EventTarget.actionList(
         pane {
           hgrow = Priority.ALWAYS
         }
-        label(action.time) {
+        label(action.timeDiff) {
           addClass(AppStyle.actionListLabel)
         }
       }
@@ -35,6 +34,6 @@ fun EventTarget.actionList(
 }
 
 fun EventTarget.actionList() = actionList(
-  actions,
-  onActionClick()
+  ActionConnect.logListLive,
+  ActionConnect.logClickListener
 )

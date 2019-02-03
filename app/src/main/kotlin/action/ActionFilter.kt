@@ -1,7 +1,6 @@
 package com.github.rougsig.devtools.app.action
 
-import com.github.rougsig.devtools.app.store.actionNames
-import com.github.rougsig.devtools.app.store.onActionFilterChanged
+import com.github.rougsig.devtools.app.store.ActionConnect
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
@@ -23,7 +22,7 @@ fun EventTarget.actionFilter(
 }
 
 fun EventTarget.actionFilter(width: ObservableValue<Number>) = actionFilter(
-  actionNames(),
-  onActionFilterChanged(),
+  ActionConnect.logNames,
+  ActionConnect.filterChangeListener,
   width
 )

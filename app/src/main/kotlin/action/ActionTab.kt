@@ -1,5 +1,7 @@
 package com.github.rougsig.devtools.app.action
 
+import com.github.rougsig.devtools.app.common.clearButton
+import com.github.rougsig.devtools.app.store.ActionConnect
 import javafx.scene.control.TabPane
 import tornadofx.splitpane
 import tornadofx.tab
@@ -14,7 +16,7 @@ fun TabPane.actionTab() {
       vbox {
         actionFilter(widthProperty())
         actionList()
-        cleatActionListButton(widthProperty())
+        clearButton(widthProperty(), "action list", ActionConnect::reset)
       }
       actionTabDetails()
     }
