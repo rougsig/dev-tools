@@ -5,6 +5,7 @@ import com.github.rougsig.devtools.app.store.ActionConnect
 import com.github.rougsig.devtools.entity.Field
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
+import javafx.scene.control.TabPane
 import javafx.scene.layout.Priority
 import tornadofx.*
 
@@ -13,8 +14,8 @@ fun EventTarget.actionTabDetails(
   previousState: ObservableValue<Field>,
   stateDiff: ObservableValue<Field?>,
   currentState: ObservableValue<Field>
-) {
-  tabpane {
+): TabPane {
+  return tabpane {
     hgrow = Priority.ALWAYS
     tab("action") {
       isClosable = false

@@ -18,6 +18,8 @@ internal class AppStyle : Stylesheet() {
     val diffTreeBooleanStyle by cssclass("diff-tree_boolean")
     val diffTreeStringStyle by cssclass("diff-tree_string")
     val diffTreeNullStyle by cssclass("diff-tree_null")
+    val diffTreeAction by cssclass("diff-tree_action")
+    val diffTreeMessage by cssclass("diff-tree_message")
 
     val clippableLabel by cssclass("clippable-label")
   }
@@ -44,6 +46,20 @@ internal class AppStyle : Stylesheet() {
     }
     diffTreeArrayStyle {
       textFill = c("#e74c3c")
+    }
+    diffTreeAction {
+      backgroundColor += c("#FFCC80")
+      padding = box(0.px, 4.px)
+      label {
+        padding = box(0.px, 1.px)
+      }
+    }
+    diffTreeMessage {
+      backgroundColor += c("#81D4FA")
+      padding = box(0.px, 4.px)
+      label {
+        padding = box(0.px, 1.px)
+      }
     }
     diffTreeBooleanStyle {
       textFill = c("#9b59b6")

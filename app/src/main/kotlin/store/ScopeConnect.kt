@@ -4,9 +4,21 @@ import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.domain.scopeLive
 import com.github.rougsig.devtools.entity.Field
 import com.github.rougsig.devtools.entity.LogEntry
+import io.reactivex.Observable
+import javafx.beans.value.ObservableValue
 
-object ScopeConnect : FilteredListConnect<LogEntry.ScopeChange>(scopeLive) {
-  val previousScope = selectedLogLive.select {
+open class ScopeListConnect<T : LogEntry>(live: Observable<T>) : FilteredListConnect<T>(live) {
+  val previousScope = selectedLogLive.previousScope
+
+  val scopeDiff = selectedLogLive.scopeDiff
+
+  val currentScope = selectedLogLive.nextScope
+}
+
+object ScopeConnect : ScopeListConnect<LogEntry.ScopeChange>(scopeLive)
+
+val ObservableValue<LogEntry>.previousScope
+  get() = select {
     if (it is LogEntry.ScopeChange) {
       it.previousScope
     } else {
@@ -14,7 +26,8 @@ object ScopeConnect : FilteredListConnect<LogEntry.ScopeChange>(scopeLive) {
     }
   }
 
-  val scopeDiff = selectedLogLive.select {
+val ObservableValue<LogEntry>.scopeDiff
+  get() = select {
     if (it is LogEntry.ScopeChange) {
       it.scopeDiff
     } else {
@@ -22,11 +35,11 @@ object ScopeConnect : FilteredListConnect<LogEntry.ScopeChange>(scopeLive) {
     }
   }
 
-  val currentScope = selectedLogLive.select {
+val ObservableValue<LogEntry>.nextScope
+  get() = select {
     if (it is LogEntry.ScopeChange) {
       it.nextScope
     } else {
       Field.ValueField("Scope", "Empty Current Scope")
     }
   }
-}

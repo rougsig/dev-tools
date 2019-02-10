@@ -16,7 +16,7 @@ abstract class FilteredListConnect<T : LogEntry>(
   private val filteredList = FilteredList(list) { true }
   private val selectedLogProperty = SimpleObjectProperty<LogEntry>(LogEntry.Init())
 
-  val logClickListener = { a: LogEntry -> selectedLogProperty.set(a) }
+  open val logClickListener = { a: LogEntry -> selectedLogProperty.set(a) }
   val logNames = mutableListOf<String>().observable()
   val filterChangeListener = { name: String ->
     filteredList.setPredicate {

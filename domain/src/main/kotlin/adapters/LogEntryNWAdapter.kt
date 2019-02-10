@@ -7,9 +7,15 @@ import java.rmi.UnexpectedException
 
 class LogEntryNWAdapter : JsonDeserializer<LogEntryNM>, JsonSerializer<LogEntryNM> {
   override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext): LogEntryNM {
-    return when (val type = json.asJsonObject.get("type").asString) {
+    val type = json.asJsonObject.get("type").asString
+    println("New message: $type")
+
+    return when (type) {
       LogEntryNM.Action::class.java.simpleName ->
         context.deserialize(json, LogEntryNM.Action::class.java)
+
+      LogEntryNM.Message::class.java.simpleName ->
+        context.deserialize(json, LogEntryNM.Message::class.java)
 
       LogEntryNM.ScopeClose::class.java.simpleName ->
         context.deserialize(json, LogEntryNM.ScopeClose::class.java)

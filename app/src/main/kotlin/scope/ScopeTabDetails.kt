@@ -5,6 +5,7 @@ import com.github.rougsig.devtools.app.store.ScopeConnect
 import com.github.rougsig.devtools.entity.Field
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
+import javafx.scene.control.TabPane
 import javafx.scene.layout.Priority
 import tornadofx.hgrow
 import tornadofx.tab
@@ -14,8 +15,8 @@ fun EventTarget.scopeTabDetails(
   previousScope: ObservableValue<Field>,
   scopeDiff: ObservableValue<Field?>,
   currentScope: ObservableValue<Field>
-) {
-  tabpane {
+): TabPane {
+  return tabpane {
     hgrow = Priority.ALWAYS
     tab("previous scope") {
       isClosable = false

@@ -2,6 +2,7 @@ package com.github.rougsig.devtools.app
 
 import com.github.rougsig.devtools.app.action.actionTab
 import com.github.rougsig.devtools.app.info.infoTab
+import com.github.rougsig.devtools.app.logs.logsTab
 import com.github.rougsig.devtools.app.message.messageTab
 import com.github.rougsig.devtools.app.scope.scopeTab
 import com.github.rougsig.devtools.app.settings.settingsRow
@@ -23,6 +24,7 @@ internal class RootView : View() {
       actionTab()
       scopeTab()
       messageTab()
+      logsTab()
       infoTab()
     }
 

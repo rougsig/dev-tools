@@ -4,9 +4,23 @@ import com.github.rougsig.devtools.app.util.select
 import com.github.rougsig.devtools.domain.actionLive
 import com.github.rougsig.devtools.entity.Field
 import com.github.rougsig.devtools.entity.LogEntry
+import io.reactivex.Observable
+import javafx.beans.value.ObservableValue
 
-object ActionConnect : FilteredListConnect<LogEntry.Action>(actionLive) {
-  val action = selectedLogLive.select {
+open class ActionListConnect<T : LogEntry>(live: Observable<T>) : FilteredListConnect<T>(live) {
+  val action = selectedLogLive.action
+
+  val currentState = selectedLogLive.currentState
+
+  val previousState = selectedLogLive.previousState
+
+  val stateDiff = selectedLogLive.stateDiff
+}
+
+object ActionConnect : ActionListConnect<LogEntry.Action>(actionLive)
+
+val ObservableValue<LogEntry>.action
+  get() = select {
     if (it is LogEntry.Action) {
       it.action
     } else {
@@ -14,7 +28,8 @@ object ActionConnect : FilteredListConnect<LogEntry.Action>(actionLive) {
     }
   }
 
-  val currentState = selectedLogLive.select {
+val ObservableValue<LogEntry>.currentState
+  get() = select {
     if (it is LogEntry.Action) {
       it.nextState
     } else {
@@ -22,7 +37,8 @@ object ActionConnect : FilteredListConnect<LogEntry.Action>(actionLive) {
     }
   }
 
-  val previousState = selectedLogLive.select {
+val ObservableValue<LogEntry>.previousState
+  get() = select {
     if (it is LogEntry.Action) {
       it.previousState
     } else {
@@ -30,11 +46,11 @@ object ActionConnect : FilteredListConnect<LogEntry.Action>(actionLive) {
     }
   }
 
-  val stateDiff = selectedLogLive.select {
+val ObservableValue<LogEntry>.stateDiff
+  get() = select {
     if (it is LogEntry.Action) {
       it.stateDiff
     } else {
-      Field.ValueField("Action", "Empty State Diff")
+      Field.ValueField("Action", "Empty Previous State")
     }
   }
-}

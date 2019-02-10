@@ -14,7 +14,6 @@ private fun <T : Field?> EventTarget.fieldTree(
   isScope: Boolean
 ) {
   val content = scrollpane {
-
     style {
       focusColor = Color.TRANSPARENT
       backgroundInsets += box(0.px)
