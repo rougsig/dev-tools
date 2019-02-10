@@ -1,27 +1,11 @@
 package com.github.rougsig.devtools.app.scope
 
+import com.github.rougsig.devtools.app.common.logFilter
 import com.github.rougsig.devtools.app.store.ScopeConnect
 import javafx.beans.value.ObservableValue
-import javafx.collections.ObservableList
 import javafx.event.EventTarget
-import tornadofx.combobox
-import tornadofx.onChange
 
-fun EventTarget.scopeFilter(
-  actionNames: ObservableList<String>,
-  onActionFilterChanged: (String) -> Unit,
-  width: ObservableValue<Number>
-) {
-  combobox<String> {
-    prefWidthProperty().bind(width)
-    items = actionNames
-    isEditable = true
-
-    valueProperty().onChange { onActionFilterChanged(it ?: "") }
-  }
-}
-
-fun EventTarget.scopeFilter(width: ObservableValue<Number>) = scopeFilter(
+fun EventTarget.scopeFilter(width: ObservableValue<Number>) = logFilter(
   ScopeConnect.logNames,
   ScopeConnect.filterChangeListener,
   width

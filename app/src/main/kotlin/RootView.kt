@@ -2,6 +2,7 @@ package com.github.rougsig.devtools.app
 
 import com.github.rougsig.devtools.app.action.actionTab
 import com.github.rougsig.devtools.app.info.infoTab
+import com.github.rougsig.devtools.app.message.messageTab
 import com.github.rougsig.devtools.app.scope.scopeTab
 import com.github.rougsig.devtools.app.settings.settingsRow
 import javafx.scene.layout.Priority
@@ -21,6 +22,7 @@ internal class RootView : View() {
 
       actionTab()
       scopeTab()
+      messageTab()
       infoTab()
     }
 

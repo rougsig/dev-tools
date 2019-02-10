@@ -8,7 +8,7 @@ import tornadofx.tab
 import tornadofx.vbox
 
 fun TabPane.actionTab() {
-  tab("action logs") {
+  tab("action") {
     isClosable = false
     splitpane {
       setDividerPositions(0.3, 0.7)

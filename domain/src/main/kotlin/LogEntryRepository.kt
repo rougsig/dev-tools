@@ -25,4 +25,5 @@ fun loadStore(file: File) {
 
   store.actions.forEach { logEntryRelay.accept(it) }
   store.scopes.forEach { logEntryRelay.accept(it) }
+  store.messages.forEach { logEntryRelay.accept(it) }
 }

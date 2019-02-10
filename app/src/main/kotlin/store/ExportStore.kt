@@ -17,7 +17,8 @@ fun exportStore(window: Window) {
     file,
     ExportStore(
       ActionConnect.logListLive.toNM(),
-      ScopeConnect.logListLive.toNM()
+      ScopeConnect.logListLive.toNM(),
+      MessageConnect.logListLive.toNM()
     )
   )
 }
